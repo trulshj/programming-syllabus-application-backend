@@ -1,0 +1,41 @@
+{
+  "01": {
+    "grade_name": "første klasse"
+  },
+  "02": {
+    "grade_name": "Andre klasse"
+  },
+  "03": {
+  "grade_name": "Tredje klasse"
+  },
+  "04": {
+    "grade_name": "Fjerde klasse"
+  },
+  "05": {
+    "grade_name": "Femte klasse"
+  },
+  "06": {
+    "grade_name": "Sjette klasse"
+  },
+  "07": {
+    "grade_name": "Syvende klasse"
+  },
+  "08": {
+    "grade_name": "Åttende klasse"
+  },
+  "09": {
+    "grade_name": "Niende klasse"
+  },
+  "10": {
+    "grade_name": "Tiende klasse"
+  },
+  "11": {
+    "grade_name": "1. VGS"
+  },
+  "12": {
+    "grade_name": "2. VGS"
+  },
+  "13": {
+    "grade_name": "3. VGS"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "01":{
+    "subject_id":"TDAT3001",
+    "subject_name": "Bacheloroppgave Dataingeniør"
+
+  },
+  "02":{
+    "subject_id":"TDAT3002",
+    "subject_name": "Systemtenkning med økonomi"
+  }
+}
