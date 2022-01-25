@@ -1,7 +1,7 @@
-import {Application,Request, Response} from "express";
-import {Sequelize} from "sequelize";
-const file = require('./fileDao')
-const artifactpath ='./artifacts/'
+import { Application, Request, Response } from "express";
+import { Sequelize } from "sequelize";
+const file = require("./fileDao");
+const artifactpath = "./artifacts/";
 /**
  * @swagger
  * /file/{fileID}:
@@ -23,17 +23,27 @@ const artifactpath ='./artifacts/'
  *
  */
 
-module.exports = (app:Application, apiURL:string, endPoint:string,sequelize:Sequelize) => {
-    const url:string=apiURL+endPoint;
-    app.get(url+'/:id', (req: Request, res: Response) => {
+module.exports = (
+    app: Application,
+    apiURL: string,
+    endPoint: string,
+    sequelize: Sequelize
+) => {
+    const url: string = apiURL + endPoint;
+    app.get(url + "/:id", (req: Request, res: Response) => {
         //todo find way to validate that id is sha
         const fileSha = req.params.id;
-        file(artifactpath).getFile(sequelize.model('file'),sequelize.model('image'),fileSha).then((fileInfo:string[])=>{
-            if(fileInfo!=undefined){
-                res.status(200).download(fileInfo[0],fileInfo[1]?fileInfo[1]:fileInfo[0])
-            }else {
-                res.status(404).json({})
-            }
-        })
+        file(artifactpath)
+            .getFile(sequelize.model("file"), sequelize.model("image"), fileSha)
+            .then((fileInfo: string[]) => {
+                if (fileInfo != undefined) {
+                    res.status(200).download(
+                        fileInfo[0],
+                        fileInfo[1] ? fileInfo[1] : fileInfo[0]
+                    );
+                } else {
+                    res.status(404).json({});
+                }
+            });
     });
-}
+};

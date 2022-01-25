@@ -1,23 +1,18 @@
 image: node:latest
 
 services:
-  - mysql:5.5
+    - mysql:5.5
 variables:
-  MYSQL_DATABASE: $DATABASE_NAME
-  MYSQL_USER: $DATABASE_USER
-  MYSQL_ROOT_PASSWORD: $DATABASE_PASSWORD
-
-
-
+    MYSQL_DATABASE: $DATABASE_NAME
+    MYSQL_USER: $DATABASE_USER
+    MYSQL_ROOT_PASSWORD: $DATABASE_PASSWORD
 
 # Run server JEST tests
 server_test:
-  stage: test
-  script:
-    - npm install -g flow-bin
-    - npm install && npm run-script test
-
-
+    stage: test
+    script:
+        - npm install -g flow-bin
+        - npm install && npm run-script test
 
 stages:
-  - test
+    - test

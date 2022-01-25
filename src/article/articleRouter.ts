@@ -1,6 +1,6 @@
-import {Application, Request, Response} from "express";
-import {Sequelize} from "sequelize";
-import {IArticle} from "./IArticle";
+import { Application, Request, Response } from "express";
+import { Sequelize } from "sequelize";
+import { IArticle } from "./IArticle";
 
 /**
  * @swagger
@@ -114,10 +114,14 @@ import {IArticle} from "./IArticle";
  *
  */
 
-
-module.exports = (app:Application,apiURL:string,endPoint:string,sequelize:Sequelize) =>{
-    const article=require('./article')(sequelize);
-    const url:string=apiURL+endPoint;
+module.exports = (
+    app: Application,
+    apiURL: string,
+    endPoint: string,
+    sequelize: Sequelize
+) => {
+    const article = require("./article")(sequelize);
+    const url: string = apiURL + endPoint;
     /**
      * @swagger
      * /article/{articleID}:
@@ -142,26 +146,26 @@ module.exports = (app:Application,apiURL:string,endPoint:string,sequelize:Sequel
      *
      */
 
-    app.get(url+"/:id",(req: Request, res: Response)=>{
-        if(req.params.id){
-            article.getArticle(req.params.id,req.header('user_id'))
-                .then((article:IArticle|undefined)=>{
+    app.get(url + "/:id", (req: Request, res: Response) => {
+        if (req.params.id) {
+            article
+                .getArticle(req.params.id, req.header("user_id"))
+                .then((article: IArticle | undefined) => {
                     res.status(200).json({
-                        article
+                        article,
                     });
-                }).catch((error:any) => {
-                res.status(404).json({
-                    "status":error.toString(),
+                })
+                .catch((error: any) => {
+                    res.status(404).json({
+                        status: error.toString(),
+                    });
                 });
-            });
-        }else {
+        } else {
             res.status(404).json({
-                "status":"article not found"
+                status: "article not found",
             });
         }
-
     });
-
 
     /**
      * @swagger
@@ -202,30 +206,27 @@ module.exports = (app:Application,apiURL:string,endPoint:string,sequelize:Sequel
      *
      */
 
-    app.post(url,(req:Request , res: Response)=>{
-            article.createArticle(req)
-                .then((article:IArticle|undefined|{error:string})=>{
-                    if (article!=undefined){
-                        res.status(200).json({
-                            "status":"article created"
-                        });
-                    }else {
-                        res.status(400).json({
-                            "status":"failed creating article"
-                        });
-
-                    }
-
-
-        }).catch((error:any)=>{
-            console.log(error)
-            res.status(400).json({
-                "status":"failed creating article"
+    app.post(url, (req: Request, res: Response) => {
+        article
+            .createArticle(req)
+            .then((article: IArticle | undefined | { error: string }) => {
+                if (article != undefined) {
+                    res.status(200).json({
+                        status: "article created",
+                    });
+                } else {
+                    res.status(400).json({
+                        status: "failed creating article",
+                    });
+                }
+            })
+            .catch((error: any) => {
+                console.log(error);
+                res.status(400).json({
+                    status: "failed creating article",
+                });
             });
-            });
-
     });
-
 
     /**
      * @swagger
@@ -253,14 +254,11 @@ module.exports = (app:Application,apiURL:string,endPoint:string,sequelize:Sequel
      *
      */
 
-
-    app.get(url,(req: Request, res: Response)=>{
+    app.get(url, (req: Request, res: Response) => {
         res.status(501).json({
-            "server-status":"articles are not implemented yet"
+            "server-status": "articles are not implemented yet",
         });
     });
-
-
 
     /**
      * @swagger
@@ -306,32 +304,27 @@ module.exports = (app:Application,apiURL:string,endPoint:string,sequelize:Sequel
      *
      */
 
-
-    app.put(url+'/:id',(req: Request, res: Response)=>{
-        article.updateArticle(req.params.id,req)
-            .then((article:IArticle|undefined|{error:string})=>{
-                if (article!=undefined){
+    app.put(url + "/:id", (req: Request, res: Response) => {
+        article
+            .updateArticle(req.params.id, req)
+            .then((article: IArticle | undefined | { error: string }) => {
+                if (article != undefined) {
                     res.status(200).json({
-                        "status":"article updated"
+                        status: "article updated",
                     });
-                }else {
+                } else {
                     res.status(400).json({
-                        "status":"failed updating article"
+                        status: "failed updating article",
                     });
-
                 }
-
-
-            }).catch((error:any)=>{
-            console.error("error updating article:",error)
-            res.status(400).json({
-                "status":error.toString()
+            })
+            .catch((error: any) => {
+                console.error("error updating article:", error);
+                res.status(400).json({
+                    status: error.toString(),
+                });
             });
-        });
     });
-
-
-
 
     /**
      * @swagger
@@ -356,12 +349,9 @@ module.exports = (app:Application,apiURL:string,endPoint:string,sequelize:Sequel
      *
      */
 
-
-    app.delete(url+'/:id',(req: Request, res: Response)=>{
+    app.delete(url + "/:id", (req: Request, res: Response) => {
         res.status(501).json({
-            "server-status":"deleting articles are not implemented yet"
+            "server-status": "deleting articles are not implemented yet",
         });
     });
-
-
-}
+};

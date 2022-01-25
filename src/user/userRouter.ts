@@ -47,15 +47,17 @@
  *
  */
 
+import { Application, Request, Response } from "express";
+import { Sequelize } from "sequelize";
 
-
-
-import {Application, Request, Response} from "express";
-import {Sequelize} from "sequelize";
-
-module.exports = (app:Application, apiURL:string, endPoint:string,sequelize:Sequelize) =>{
-    const user=require('./userDao')(sequelize);
-    const url:string=apiURL+endPoint;
+module.exports = (
+    app: Application,
+    apiURL: string,
+    endPoint: string,
+    sequelize: Sequelize
+) => {
+    const user = require("./userDao")(sequelize);
+    const url: string = apiURL + endPoint;
     /**
      * @swagger
      * /user:
@@ -84,13 +86,11 @@ module.exports = (app:Application, apiURL:string, endPoint:string,sequelize:Sequ
      *
      */
 
-    app.get(url,(req: Request, res: Response)=>{
-
+    app.get(url, (req: Request, res: Response) => {
         res.status(501).json({
-            "status-message":"this functions is not yet implemented"
+            "status-message": "this functions is not yet implemented",
         });
     });
-
 
     /**
      * @swagger
@@ -116,30 +116,25 @@ module.exports = (app:Application, apiURL:string, endPoint:string,sequelize:Sequ
 
     // create account
 
-    app.post(url,(req:Request , res: Response)=>{
-        if(req.body.username&&req.body.email&&req.body.password){
-            user.createUser(req.body)
-                .then((user:string|undefined)=>{
-                    if(user!=undefined){
-                        res.status(200).json({
-                            "status":user
-                        });
-                    }else {
-                        res.status(403).json({
-                            "status":"username or email taken"
-                        });
-                    }
-
-                })
-        }else{
+    app.post(url, (req: Request, res: Response) => {
+        if (req.body.username && req.body.email && req.body.password) {
+            user.createUser(req.body).then((user: string | undefined) => {
+                if (user != undefined) {
+                    res.status(200).json({
+                        status: user,
+                    });
+                } else {
+                    res.status(403).json({
+                        status: "username or email taken",
+                    });
+                }
+            });
+        } else {
             res.status(400).json({
-                "error":"bad request"
+                error: "bad request",
             });
         }
-
-
     });
-
 
     /**
      * @swagger
@@ -168,17 +163,17 @@ module.exports = (app:Application, apiURL:string, endPoint:string,sequelize:Sequ
      *          description: note response not decided yet
      */
 
-
-    app.put(url,(req:Request , res: Response)=>{
-
-        user.updateUser(req.body).then((status:string)=>{
-            res.status(200).json({
-                "status":status
+    app.put(url, (req: Request, res: Response) => {
+        user.updateUser(req.body)
+            .then((status: string) => {
+                res.status(200).json({
+                    status: status,
+                });
+            })
+            .catch((err: any) => {
+                res.status(401).json({
+                    status: err.toString(),
+                });
             });
-        }).catch((err:any)=>{
-            res.status(401).json({
-                "status":err.toString()
-            });
-        })
     });
-}
+};

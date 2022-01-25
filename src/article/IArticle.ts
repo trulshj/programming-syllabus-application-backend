@@ -1,42 +1,46 @@
-export interface IArticle{
-    article_title:string,
-    article_id?:number,
-    article_description:string,
-    publication_date?:string,
-    article_change_date?:string,
-    time_to_complete?:number,
-    view_counter?:number,
-    published?:boolean,
-    files?:[
+export interface IArticle {
+    article_title: string;
+    article_id?: number;
+    article_description: string;
+    publication_date?: string;
+    article_change_date?: string;
+    time_to_complete?: number;
+    view_counter?: number;
+    published?: boolean;
+    files?: [
         {
-            file_name:string,
-            file_id:string
-        }],
-    images?:[
-        {
-            file_id:string,
-            alt_text:string,
-            file_name:string
+            file_name: string;
+            file_id: string;
         }
-        ],
-    subjects?:[
+    ];
+    images?: [
         {
-            subject_id:string,
-            subject_name:string
-        }],
-    user:{
-        username:string
-    },
-    themes:[{theme_name:string}],
-    "grade_levels":[
+            file_id: string;
+            alt_text: string;
+            file_name: string;
+        }
+    ];
+    subjects?: [
         {
-            grade_name:string,
-            grade_id:number
-        }],
-    tools:[
+            subject_id: string;
+            subject_name: string;
+        }
+    ];
+    user: {
+        username: string;
+    };
+    themes: [{ theme_name: string }];
+    grade_levels: [
         {
-            tool_name:string,
-            tool_id:number
-        }],
-    author_id:string
+            grade_name: string;
+            grade_id: number;
+        }
+    ];
+    tools: [
+        {
+            tool_name: string;
+            tool_id: number;
+        }
+    ];
+    author_id: string;
 }

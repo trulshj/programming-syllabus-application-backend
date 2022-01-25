@@ -1,26 +1,25 @@
 {
-  "01":{
-    "user_id":"fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
-    "email": "admin@admin.com",
-    "password": "adminpassword",
-    "role_id": 1,
-    "username": "admin"
-
-  },
-  "02":{
-    "user_id":"6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a",
-    "email": "user@user.com",
-    "password": "8420c55a25898c87a7f2d8d7fcf7fe1b24d4b7c47e7468bde65369c0590ff3e1",
-    "salt": "7317a0fc0924870ed1686467f3253122918737e4c58391e0ff73c07a6a7ee3b6",
-    "role_id": 0,
-    "username":"JestUser"
-  },
-  "03":{
-    "user_id":"7777010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608",
-    "email": "user2@user.com",
-    "password": "userpassword",
-    "salt":"random salt",
-    "role_id": 0,
-    "username":"Just a user2"
-  }
+    "01": {
+        "user_id": "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
+        "email": "admin@admin.com",
+        "password": "adminpassword",
+        "role_id": 1,
+        "username": "admin"
+    },
+    "02": {
+        "user_id": "6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a",
+        "email": "user@user.com",
+        "password": "8420c55a25898c87a7f2d8d7fcf7fe1b24d4b7c47e7468bde65369c0590ff3e1",
+        "salt": "7317a0fc0924870ed1686467f3253122918737e4c58391e0ff73c07a6a7ee3b6",
+        "role_id": 0,
+        "username": "JestUser"
+    },
+    "03": {
+        "user_id": "7777010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608",
+        "email": "user2@user.com",
+        "password": "userpassword",
+        "salt": "random salt",
+        "role_id": 0,
+        "username": "Just a user2"
+    }
 }

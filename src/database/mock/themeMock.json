@@ -1,8 +1,8 @@
 {
-  "01": {
-    "theme_name": "dataspill"
-  },
-  "02": {
-    "theme_name": "program"
-  }
+    "01": {
+        "theme_name": "dataspill"
+    },
+    "02": {
+        "theme_name": "program"
+    }
 }

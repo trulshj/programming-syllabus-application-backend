@@ -1,7 +1,7 @@
-import {Application, Request, Response} from "express";
-import {IUser} from "../user/IUser";
-import {Sequelize} from "sequelize";
-const userFeature = require('../user/userFeatures')
+import { Application, Request, Response } from "express";
+import { IUser } from "../user/IUser";
+import { Sequelize } from "sequelize";
+const userFeature = require("../user/userFeatures");
 
 /**
  * @swagger
@@ -20,9 +20,13 @@ const userFeature = require('../user/userFeatures')
  *          type: string
  */
 
-
-module.exports = (app:Application,apiURL:string,endPoint:string,sequelize:Sequelize) =>{
-    const url:string=apiURL+endPoint;
+module.exports = (
+    app: Application,
+    apiURL: string,
+    endPoint: string,
+    sequelize: Sequelize
+) => {
+    const url: string = apiURL + endPoint;
 
     /**
      * @swagger
@@ -47,21 +51,20 @@ module.exports = (app:Application,apiURL:string,endPoint:string,sequelize:Sequel
      *              $ref: '#/definitions/postLoginResponse'
      */
 
-    app.post(url,(req:Request , res: Response)=>{
-
-        userFeature.logInUser(req.body,sequelize).then((user:IUser)=>{
-            res.status(200).json({
-                "status":"ok",
-                user
+    app.post(url, (req: Request, res: Response) => {
+        userFeature
+            .logInUser(req.body, sequelize)
+            .then((user: IUser) => {
+                res.status(200).json({
+                    status: "ok",
+                    user,
+                });
+            })
+            .catch((erros: any) => {
+                console.error(erros);
+                res.status(404).json({
+                    status: erros.toString(),
+                });
             });
-        }).catch((erros:any)=>{
-            console.error(erros)
-            res.status(404).json({
-                "status":erros.toString(),
-            });
-        })
-
     });
-
-
-}
+};

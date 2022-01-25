@@ -1,24 +1,22 @@
 {
-  "01": {
-    "gradeLevelId": 1,
-    "articleArticleId":2
-  },
-  "03": {
-    "gradeLevelId": 2,
-    "articleArticleId":2
-  },
-  "04": {
-    "gradeLevelId": 1,
-    "articleArticleId":5
-  },
-  "05": {
-  "gradeLevelId": 2,
-  "articleArticleId":7
-},
-  "06": {
-    "gradeLevelId": 1,
-    "articleArticleId":8
-  }
-
-
+    "01": {
+        "gradeLevelId": 1,
+        "articleArticleId": 2
+    },
+    "03": {
+        "gradeLevelId": 2,
+        "articleArticleId": 2
+    },
+    "04": {
+        "gradeLevelId": 1,
+        "articleArticleId": 5
+    },
+    "05": {
+        "gradeLevelId": 2,
+        "articleArticleId": 7
+    },
+    "06": {
+        "gradeLevelId": 1,
+        "articleArticleId": 8
+    }
 }

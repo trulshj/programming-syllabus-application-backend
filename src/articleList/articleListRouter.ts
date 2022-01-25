@@ -1,15 +1,19 @@
-import {Application, Request, Response} from "express";
-import {Sequelize} from "sequelize";
+import { Application, Request, Response } from "express";
+import { Sequelize } from "sequelize";
 /**
  * @swagger
  * definitions:
  *   getArticleListResponse:
  *
  */
-module.exports = (app:Application,apiURL:string,endPoint:string,sequelize:Sequelize) =>{
-    const article=require('./articleListDao');
-    const url:string=apiURL+endPoint;
-
+module.exports = (
+    app: Application,
+    apiURL: string,
+    endPoint: string,
+    sequelize: Sequelize
+) => {
+    const article = require("./articleListDao");
+    const url: string = apiURL + endPoint;
 
     /**
      * @swagger
@@ -40,36 +44,40 @@ module.exports = (app:Application,apiURL:string,endPoint:string,sequelize:Sequel
      *        schema:
      *
      */
-    app.get(url,(req: Request, res: Response)=>{
-        if(req.header('query-type')=="byUser"&&req.header('userID')){
-            article().getByUser(sequelize,req.header('userID')).then((article:JSON)=>{
-                res.status(200).json({
-                    article
+    app.get(url, (req: Request, res: Response) => {
+        if (req.header("query-type") == "byUser" && req.header("userID")) {
+            article()
+                .getByUser(sequelize, req.header("userID"))
+                .then((article: JSON) => {
+                    res.status(200).json({
+                        article,
+                    });
                 });
-            })
-        }else if(req.header('query')){
-            article().searchArticleList(sequelize,req.header('query'))
-                .then((article:JSON)=>{
-                    if (article != undefined){
+        } else if (req.header("query")) {
+            article()
+                .searchArticleList(sequelize, req.header("query"))
+                .then((article: JSON) => {
+                    if (article != undefined) {
                         res.status(200).json({
-                            article
+                            article,
                         });
-                    }else {
+                    } else {
                         res.status(404).json({});
                     }
                 });
-        }else {
-            article().getArticleList(sequelize,req.header('userID'))
-                .then((article:JSON)=>{
+        } else {
+            article()
+                .getArticleList(sequelize, req.header("userID"))
+                .then((article: JSON) => {
                     console.log(article);
-                    if (article != undefined){
+                    if (article != undefined) {
                         res.status(200).json({
-                            article
+                            article,
                         });
-                    }else {
+                    } else {
                         res.status(404).json({});
                     }
                 });
         }
     });
-}
+};
