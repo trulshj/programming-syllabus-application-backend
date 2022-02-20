@@ -1,19 +1,10 @@
 import DoneCallback = jest.DoneCallback;
-import { Sequelize } from "sequelize";
-import { IArticle } from "./IArticle";
+import { IArticle } from "../article/IArticle";
+import { initSequelize } from "../lib/helper";
 
 // Sequelize database connection
-// @ts-ignore
-const sequelize = new Sequelize(
-    process.env.DATABASE_NAME,
-    process.env.DATABASE_USER,
-    process.env.DATABASE_PASSWORD,
-    {
-        host: process.env.DATABASE_URL,
-        dialect: process.env.DATABASE_DIALECT,
-        logging: process.env.QUERY_LOG == "true",
-    }
-);
+const sequelize = initSequelize();
+
 const database = require("../database/database");
 beforeAll(async (done: DoneCallback) => {
     await sequelize.authenticate().then(async () => {

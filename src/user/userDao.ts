@@ -3,7 +3,7 @@ import { pbkdf2, randomBytes } from "crypto";
 import { IUser } from "./IUser";
 
 // 32 byte converted to hex is 32*2 => 64
-async function getRandomeString(): Promise<string> {
+async function getRandomString(): Promise<string> {
     return <Promise<string>>new Promise((resolve) => {
         randomBytes(32, async (error, randomBuffer) => {
             resolve(randomBuffer.toString("hex"));
@@ -32,11 +32,10 @@ module.exports = (sequelize: Sequelize) => {
                     })
                     .then(async (countRes) => {
                         if (countRes.count <= 0) {
-                            const salt: any = await getRandomeString();
+                            const salt: any = await getRandomString();
 
-                            //@ts-ignore
                             pbkdf2(
-                                newUser.password,
+                                newUser.password as string,
                                 salt,
                                 100,
                                 32,
@@ -47,7 +46,7 @@ module.exports = (sequelize: Sequelize) => {
                                             .model("user")
                                             .create({
                                                 user_id:
-                                                    await getRandomeString(),
+                                                    await getRandomString(),
                                                 username: newUser.username,
                                                 email: newUser.email,
                                                 password:
@@ -85,10 +84,9 @@ module.exports = (sequelize: Sequelize) => {
         },
         updateUser(user: IUser) {
             return <Promise<string>>new Promise(async (res, error: any) => {
-                const salt: string = await getRandomeString();
-                // @ts-ignore
+                const salt: string = await getRandomString();
                 pbkdf2(
-                    user.password,
+                    user.password as string,
                     salt,
                     100,
                     32,

@@ -1,4 +1,5 @@
 import { Application, response } from "express";
+import { initSequelize } from "./lib/helper";
 const express = require("express");
 const app: Application = express();
 const port: number = 8080;
@@ -6,7 +7,6 @@ const routes: any = require("./routerTopLevel");
 const swaggerJsdoc = require("swagger-jsdoc");
 const baseAPI: string = "/api";
 const swaggerEndPoint: string = "/api-docs/";
-const Sequelize = require("sequelize");
 const cors = require("cors");
 require("dotenv").config();
 const fs = require("fs");
@@ -34,16 +34,8 @@ https.createServer(ssl, app).listen(port, () => {
 });
 
 // Sequelize database connection
-const sequlize = new Sequelize(
-    process.env.DATABASE_NAME,
-    process.env.DATABASE_USER,
-    process.env.DATABASE_PASSWORD,
-    {
-        host: process.env.DATABASE_URL,
-        dialect: process.env.DATABASE_DIALECT,
-        logging: process.env.QUERY_LOG == "true",
-    }
-);
+const sequlize = initSequelize();
+
 // generating database
 sequlize
     .authenticate()
@@ -63,10 +55,10 @@ sequlize
 const swaggerDefinition = {
     info: {
         // API informations (required)
-        title: 'Backend API for "name of produckt"', // Title (required),
+        title: 'Backend API for "name of product"', // Title (required),
         swagger: "2.0",
         version: "0.0.1", // Version (required)
-        description: "Backend api for bachelor", // Description (optional)
+        description: "Backend API for bachelor", // Description (optional)
     },
     servers: [
         {

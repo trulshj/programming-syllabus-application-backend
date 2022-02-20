@@ -1,5 +1,6 @@
 import DoneCallback = jest.DoneCallback;
-import { Sequelize } from "sequelize";
+import { initSequelize } from "../lib/helper";
+
 const fs = require("fs");
 const artifactPath: string = "./outdir/artifacts/";
 const fileSha: string =
@@ -7,18 +8,9 @@ const fileSha: string =
 const imageSha: string =
     "ffff5536f73bdae8816f0ea40726ef5e9b810d914493075903bb90623d97b1d8";
 jest.setTimeout(50000);
+
 // Sequelize database connection
-// @ts-ignore
-const sequelize = new Sequelize(
-    process.env.DATABASE_NAME,
-    process.env.DATABASE_USER,
-    process.env.DATABASE_PASSWORD,
-    {
-        host: process.env.DATABASE_URL,
-        dialect: process.env.DATABASE_DIALECT,
-        logging: process.env.QUERY_LOG == "true",
-    }
-);
+const sequelize = initSequelize();
 
 const database = require("../database/database");
 beforeAll(async (done: DoneCallback) => {

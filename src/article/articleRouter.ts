@@ -121,49 +121,72 @@ module.exports = (
     sequelize: Sequelize
 ) => {
     const article = require("./article")(sequelize);
+    const articleList = require("../articleList/articleListDao");
     const url: string = apiURL + endPoint;
+
     /**
      * @swagger
-     * /article/{articleID}:
+     * /articlelist:
      *   get:
-     *     description: fetch info about one specific article by id
+     *     description: query endpoint for articles
      *     tags:
      *      - article
      *     parameters:
-     *       - in: path
-     *         name: articleID
-     *         required: true
-     *         type: integer
-     *         minimum: 1
-     *       - in: header
-     *         name: user_id
-     *         type: string
+     *        - in: header
+     *          name: query-type
+     *          schema:
+     *              type: string
+     *          required: false
+     *        - in: header
+     *          name: query
+     *          schema:
+     *              type: string
+     *          required: false
+     *        - in: header
+     *          name: userID
+     *          schema:
+     *              type: string
+     *          required: false
      *     responses:
      *       200:
-     *        description: response from the server
+     *        description: returns a list of articles with the most important values.
      *        schema:
-     *              $ref: '#/definitions/getArticleResponse'
      *
      */
-
-    app.get(url + "/:id", (req: Request, res: Response) => {
-        if (req.params.id) {
-            article
-                .getArticle(req.params.id, req.header("user_id"))
-                .then((article: IArticle | undefined) => {
+    app.get(url, (req: Request, res: Response) => {
+        if (req.header("query-type") == "byUser" && req.header("userID")) {
+            articleList()
+                .getByUser(sequelize, req.header("userID"))
+                .then((article: JSON) => {
                     res.status(200).json({
                         article,
                     });
-                })
-                .catch((error: any) => {
-                    res.status(404).json({
-                        status: error.toString(),
-                    });
+                });
+        } else if (req.header("query")) {
+            articleList()
+                .searchArticleList(sequelize, req.header("query"))
+                .then((article: JSON) => {
+                    if (article != undefined) {
+                        res.status(200).json({
+                            article,
+                        });
+                    } else {
+                        res.status(404).json({});
+                    }
                 });
         } else {
-            res.status(404).json({
-                status: "article not found",
-            });
+            articleList()
+                .getArticleList(sequelize, req.header("userID"))
+                .then((article: JSON) => {
+                    console.log(article);
+                    if (article != undefined) {
+                        res.status(200).json({
+                            article,
+                        });
+                    } else {
+                        res.status(404).json({});
+                    }
+                });
         }
     });
 
@@ -262,6 +285,51 @@ module.exports = (
 
     /**
      * @swagger
+     * /article/{articleID}:
+     *   get:
+     *     description: fetch info about one specific article by id
+     *     tags:
+     *      - article
+     *     parameters:
+     *       - in: path
+     *         name: articleID
+     *         required: true
+     *         type: integer
+     *         minimum: 1
+     *       - in: header
+     *         name: user_id
+     *         type: string
+     *     responses:
+     *       200:
+     *        description: response from the server
+     *        schema:
+     *              $ref: '#/definitions/getArticleResponse'
+     *
+     */
+
+    app.get(`${url}/:id`, (req: Request, res: Response) => {
+        if (req.params.id) {
+            article
+                .getArticle(req.params.id, req.header("user_id"))
+                .then((article: IArticle | undefined) => {
+                    res.status(200).json({
+                        article,
+                    });
+                })
+                .catch((error: any) => {
+                    res.status(404).json({
+                        status: error.toString(),
+                    });
+                });
+        } else {
+            res.status(404).json({
+                status: "article not found",
+            });
+        }
+    });
+
+    /**
+     * @swagger
      *
      * /article/{articleID}:
      *      put:
@@ -304,7 +372,7 @@ module.exports = (
      *
      */
 
-    app.put(url + "/:id", (req: Request, res: Response) => {
+    app.put(`${url}/:id`, (req: Request, res: Response) => {
         article
             .updateArticle(req.params.id, req)
             .then((article: IArticle | undefined | { error: string }) => {
@@ -349,7 +417,7 @@ module.exports = (
      *
      */
 
-    app.delete(url + "/:id", (req: Request, res: Response) => {
+    app.delete(`${url}/:id`, (req: Request, res: Response) => {
         res.status(501).json({
             "server-status": "deleting articles are not implemented yet",
         });
