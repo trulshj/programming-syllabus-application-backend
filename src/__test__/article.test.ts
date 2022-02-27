@@ -1,6 +1,8 @@
 import DoneCallback = jest.DoneCallback;
 import { IArticle } from "../article/IArticle";
 import { initSequelize } from "../lib/helper";
+import { Article } from "../database/models/Article.model";
+
 
 // Sequelize database connection
 const sequelize = initSequelize();
@@ -17,16 +19,14 @@ beforeAll(async (done: DoneCallback) => {
 });
 
 test("fething article from database", (done) => {
-    const article = require("./article")(sequelize);
-    article.getArticle(2).then((oneArticle: JSON) => {
+    Article.getArticle(2).then((oneArticle: JSON) => {
         expect(JSON.stringify(oneArticle).length).toBeGreaterThan(10);
         done();
     });
 }, 6000);
 
 test("trying to fetch data from hidden article", (done) => {
-    const article = require("./article")(sequelize);
-    article
+    Article
         .getArticle(1)
         .then()
         .catch((error: any) => {
@@ -36,8 +36,7 @@ test("trying to fetch data from hidden article", (done) => {
 }, 6000);
 
 test("trying to fetch unpublished by owned user", (done) => {
-    const article = require("./article")(sequelize);
-    article
+    Article
         .getArticle(
             1,
             "6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a"

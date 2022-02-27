@@ -1,19 +1,43 @@
-import { Sequelize } from "sequelize";
+import { Sequelize } from "@sequelize/core";
+import { sequelize } from "../app";
+import { Article } from "../database/models/Article.model";
+import { File } from "../database/models/File.model";
+import { Grade } from "../database/models/Grade.model";
+import { Image } from "../database/models/Image.model";
+import { Subject } from "../database/models/Subject.model";
+import { Theme } from "../database/models/Theme.model";
+import { Tool } from "../database/models/Tool.model";
+import { User } from "../database/models/User.model";
 import { IArticle } from "./IArticle";
 
 const formidable = require("formidable");
 const userFeatures = require("../user/userFeatures");
 
 // verifying that the user is allowed to change the article
-function verifyUser(
+/**
+ * Checks whether a user is allowed to change an article
+ * @param userId - The user that is currently trying to edit an article
+ * @param articleId - The ID of the article that is being checked
+ * @param sequelize
+ * @returns
+ */
+async function verifyUser(
     userId: string,
     articleId: number,
     sequelize: Sequelize
 ): Promise<boolean> {
     // undefined means that this is a new article
-    if (articleId == undefined) {
+    if (!articleId) {
         return new Promise<boolean>((res) => res(true));
     }
+
+    const article = await Article.findByPk(articleId, { include: User });
+
+    if (!article) {
+        return new Promise<boolean>((res) => res(true));
+    }
+
+    article.id;
 
     return new Promise<boolean>((res) => {
         try {
@@ -38,103 +62,89 @@ function verifyUser(
     });
 }
 
-module.exports = (sequelize: Sequelize) => {
-    return {
-        getArticle: (articleNumber: number, userId?: string) => {
-            return <Promise<undefined | JSON>>(
-                new Promise(async (res, reject) => {
-                    if (isNaN(articleNumber)) {
-                        reject("Not a valid article number");
-                    }
-                    sequelize
-                        .model("Article")
-                        .findOne({
-                            attributes: [
-                                "title",
-                                "description",
-                                "publicationDate",
-                                "updatedDate",
-                                "timeToComplete",
-                                "viewCounter",
-                                "published",
-                                "authorId",
-                            ],
-                            where: { id: articleNumber },
-                            include: [
-                                {
-                                    model: sequelize.model("File"),
-                                    attributes: ["name", "id"],
-                                    required: false,
-                                },
-                                {
-                                    model: sequelize.model("Image"),
-                                    attributes: ["fileId", "altText"],
-                                    required: false,
-                                },
-                                {
-                                    model: sequelize.model("Subject"),
-                                    attributes: ["id", "name"],
-                                    required: false,
-                                    through: { attributes: [] },
-                                },
-                                {
-                                    model: sequelize.model("User"),
-                                    required: true,
-                                    attributes: ["username"],
-                                },
-                                {
-                                    model: sequelize.model("Theme"),
-                                    required: false,
-                                    attributes: ["name"],
-                                    through: { attributes: [] },
-                                },
-                                {
-                                    model: sequelize.model("Grade"),
-                                    required: false,
-                                    attributes: ["name"],
-                                    through: { attributes: [] },
-                                },
-                                {
-                                    model: sequelize.model("Tool"),
-                                    required: false,
-                                    attributes: ["name"],
-                                    through: { attributes: [] },
-                                },
-                            ],
-                        })
-                        .then(async (oneArticle: any) => {
-                            if (oneArticle != null) {
-                                if (!oneArticle.dataValues.published) {
-                                    if (
-                                        oneArticle.dataValues.authorId == userId
-                                    ) {
-                                        delete oneArticle.dataValues[
-                                            "authorId"
-                                        ];
-                                        res(oneArticle.dataValues);
-                                    } else if (
-                                        await userFeatures.isAdmin(
-                                            userId,
-                                            sequelize
-                                        )
-                                    ) {
-                                        delete oneArticle.dataValues[
-                                            "authorId"
-                                        ];
-                                        res(oneArticle.dataValues);
-                                    } else reject("access denied");
-                                } else {
-                                    delete oneArticle.dataValues["authorId"];
-                                    res(oneArticle.dataValues);
-                                }
-                            } else {
-                                reject("can't find article");
-                            }
-                        })
-                        .catch((erro: JSON) => reject(erro));
-                })
-            );
-        },
+export async function getArticle(articleId: number) {
+    return await Article.findByPk(articleId, {
+        include: [
+            {
+                model: File,
+                attributes: ["id", "name"],
+            },
+            {
+                model: Image,
+                attributes: ["fileId", "altText"],
+            },
+            {
+                model: Subject,
+                through: { attributes: [] },
+                attributes: ["id", "name"],
+            },
+            {
+                model: Theme,
+                through: { attributes: [] },
+                attributes: ["id", "name"],
+            },
+            {
+                model: Grade,
+                through: { attributes: [] },
+                attributes: ["id", "name"],
+            },
+            {
+                model: Tool,
+                through: { attributes: [] },
+                attributes: ["id", "name"],
+            },
+        ],
+    });
+}
+
+export async function createArticle(article: IArticle) {
+    let created = await Article.create({
+        title: article.title,
+        description: article.description,
+        authorId: article.authorId,
+    });
+
+    const form = formidable({ multiples: true, uploadDir: "./artifacts" });
+    form.parse(article);
+
+    for (let file of article.files) {
+        File.create({ articleId: created.id, name: file.name, id: file.id });
+    }
+
+    for (let image of article.images) {
+        Image.create({
+            articleId: created.id,
+            fileId: image.fileId,
+            altText: image.altText,
+        });
+    }
+
+    for (let subject of article.subjects) {
+        sequelize
+            .model("SubjectArticle")
+            .create({ ArticleId: created.id, SubjectId: subject.id });
+    }
+
+    for (let theme of article.themes) {
+        sequelize
+            .model("ThemeArticle")
+            .create({ ArticleId: created.id, ThemeId: theme.id });
+    }
+
+    for (let grade of article.grades) {
+        sequelize
+            .model("GradeArticle")
+            .create({ ArticleId: created.id, GradeId: grade.id });
+    }
+
+    for (let tool of article.tools) {
+        sequelize
+            .model("ToolArticle")
+            .create({ ArticleId: created.id, ToolId: tool.id });
+    }
+}
+
+/*
         createArticle: (req: IArticle) => {
             return <Promise<JSON | IArticle>>(
                 new Promise((res: any, error: any) => {
@@ -302,6 +312,8 @@ module.exports = (sequelize: Sequelize) => {
                 })
             );
         },
+
+        /*
         updateArticle: (articleId: number, req: IArticle) => {
             return <Promise<undefined | JSON>>(
                 new Promise((res: any, error: any) => {
@@ -487,3 +499,4 @@ module.exports = (sequelize: Sequelize) => {
         },
     };
 };
+*/

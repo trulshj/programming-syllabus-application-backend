@@ -8,13 +8,12 @@ export interface IArticle {
     viewCounter?: number;
     published?: boolean;
     files: {
-        file_name: string;
-        fileId: string;
+        name: string;
+        id: string;
     }[];
     images: {
         fileId: string;
         altText: string;
-        file_name: string;
     }[];
     subjects: {
         id: string;

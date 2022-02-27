@@ -1,5 +1,6 @@
 import { Application, Request, Response } from "express";
-import { Sequelize } from "sequelize";
+import { Sequelize } from "@sequelize/core";
+import { getArticle } from "./article";
 import { IArticle } from "./IArticle";
 
 /**
@@ -120,7 +121,6 @@ module.exports = (
     endPoint: string,
     sequelize: Sequelize
 ) => {
-    const article = require("./article")(sequelize);
     const articleList = require("../articleList/articleListDao");
     const url: string = apiURL + endPoint;
 
@@ -153,6 +153,9 @@ module.exports = (
      *        schema:
      *
      */
+
+    /* TODO:
+
     app.get(url, (req: Request, res: Response) => {
         if (req.header("query-type") == "byUser" && req.header("userID")) {
             articleList()
@@ -189,6 +192,8 @@ module.exports = (
                 });
         }
     });
+
+    */
 
     /**
      * @swagger
@@ -229,8 +234,9 @@ module.exports = (
      *
      */
 
+    /* TODO:
     app.post(url, (req: Request, res: Response) => {
-        article
+        article2
             .createArticle(req)
             .then((article: IArticle | undefined | { error: string }) => {
                 if (article != undefined) {
@@ -250,6 +256,8 @@ module.exports = (
                 });
             });
     });
+
+    */
 
     /**
      * @swagger
@@ -277,6 +285,7 @@ module.exports = (
      *
      */
 
+    // FIXME:
     app.get(url, (req: Request, res: Response) => {
         res.status(501).json({
             "server-status": "articles are not implemented yet",
@@ -285,7 +294,7 @@ module.exports = (
 
     /**
      * @swagger
-     * /article/{articleID}:
+     * /articles/{articleID}:
      *   get:
      *     description: fetch info about one specific article by id
      *     tags:
@@ -306,24 +315,22 @@ module.exports = (
      *              $ref: '#/definitions/getArticleResponse'
      *
      */
+    app.get(`${url}/:id`, async (req: Request, res: Response) => {
+        const articleId = parseInt(req.params.id);
 
-    app.get(`${url}/:id`, (req: Request, res: Response) => {
-        if (req.params.id) {
-            article
-                .getArticle(req.params.id, req.header("user_id"))
-                .then((article: IArticle | undefined) => {
-                    res.status(200).json({
-                        article,
-                    });
-                })
-                .catch((error: any) => {
-                    res.status(404).json({
-                        status: error.toString(),
-                    });
-                });
+        if (isNaN(articleId)) {
+            res.status(400).json({
+                error: `Bad request, ${articleId} is not a valid articleId`,
+            });
+        }
+
+        const article = await getArticle(parseInt(req.params.id));
+
+        if (article) {
+            res.status(200).json(article);
         } else {
             res.status(404).json({
-                status: "article not found",
+                error: `Could not find article with articleId ${articleId}`,
             });
         }
     });
@@ -372,8 +379,10 @@ module.exports = (
      *
      */
 
+    /* TODO:
+
     app.put(`${url}/:id`, (req: Request, res: Response) => {
-        article
+        article2
             .updateArticle(req.params.id, req)
             .then((article: IArticle | undefined | { error: string }) => {
                 if (article != undefined) {
@@ -393,6 +402,8 @@ module.exports = (
                 });
             });
     });
+
+    */
 
     /**
      * @swagger

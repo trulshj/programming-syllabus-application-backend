@@ -1,20 +1,35 @@
-import { DataTypes, Model } from "sequelize";
+import {
+    CreationOptional,
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    Model,
+} from "@sequelize/core";
 import { sequelize } from "../../app";
+export class Tool extends Model<
+    InferAttributes<Tool>,
+    InferCreationAttributes<Tool>
+> {
+    declare id: CreationOptional<number>;
+    declare name: string;
 
-export const Tool = sequelize.define<Model<any, any>, unknown>(
-    "Tool",
+    declare createdAt: CreationOptional<Date>;
+    declare updatedAt: CreationOptional<Date>;
+}
+
+Tool.init(
     {
         id: {
             type: DataTypes.INTEGER.UNSIGNED,
-            primaryKey: true,
             autoIncrement: true,
+            primaryKey: true,
         },
         name: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(128),
+            allowNull: false,
         },
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
     },
-    {
-        createdAt: false,
-        updatedAt: false,
-    }
+    { sequelize, tableName: "Tools" }
 );

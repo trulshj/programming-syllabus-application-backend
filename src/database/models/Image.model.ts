@@ -1,19 +1,41 @@
-import { DataTypes, Model } from "sequelize";
+import {
+    CreationOptional,
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    Model,
+    NonAttribute,
+} from "@sequelize/core";
 import { sequelize } from "../../app";
+import { Article } from "./Article.model";
 
-export const Image = sequelize.define<Model<any, any>, unknown>(
-    "Image",
+export class Image extends Model<
+    InferAttributes<Image>,
+    InferCreationAttributes<Image>
+> {
+    declare fileId: string;
+    declare altText: string;
+
+    declare articleId: number;
+    declare article?: NonAttribute<Article>;
+
+    declare createdAt: CreationOptional<Date>;
+    declare updatedAt: CreationOptional<Date>;
+}
+
+Image.init(
     {
         fileId: {
-            type: DataTypes.STRING(64),
+            type: DataTypes.STRING,
             primaryKey: true,
         },
         altText: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(128),
+            allowNull: false,
         },
+        articleId: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false },
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
     },
-    {
-        createdAt: true,
-        updatedAt: true,
-    }
+    { sequelize, tableName: "Images" }
 );

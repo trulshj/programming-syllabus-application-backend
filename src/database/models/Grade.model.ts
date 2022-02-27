@@ -1,21 +1,36 @@
-import { DataTypes, Model } from "sequelize";
+import {
+    CreationOptional,
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    Model,
+} from "@sequelize/core";
 import { sequelize } from "../../app";
 
-export const Grade = sequelize.define<Model<any, any>, unknown>(
-    "Grade",
+export class Grade extends Model<
+    InferAttributes<Grade>,
+    InferCreationAttributes<Grade>
+> {
+    declare id: number;
+    declare name: string;
+
+    declare createdAt: CreationOptional<Date>;
+    declare updatedAt: CreationOptional<Date>;
+}
+
+Grade.init(
     {
         id: {
             type: DataTypes.INTEGER.UNSIGNED,
-            primaryKey: true,
             autoIncrement: true,
+            primaryKey: true,
         },
         name: {
-            type: DataTypes.STRING,
-            unique: true,
+            type: DataTypes.STRING(128),
+            allowNull: false,
         },
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
     },
-    {
-        createdAt: false,
-        updatedAt: false,
-    }
+    { sequelize, tableName: "Grades" }
 );

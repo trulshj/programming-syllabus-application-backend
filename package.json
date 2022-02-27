@@ -17,6 +17,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@sequelize/core": "^7.0.0-alpha.10",
         "@types/cors": "^2.8.10",
         "@types/formidable": "^1.2.1",
         "cors": "^2.8.5",

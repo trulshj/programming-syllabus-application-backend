@@ -1,7 +1,7 @@
-import sequelize = require("sequelize");
+import { Sequelize } from "@sequelize/core";
 
 export function initSequelize() {
-    return new sequelize.Sequelize(
+    return new Sequelize(
         process.env.DATABASE_NAME as string,
         process.env.DATABASE_USER as string,
         process.env.DATABASE_PASSWORD,

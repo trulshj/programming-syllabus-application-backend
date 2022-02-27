@@ -34,10 +34,10 @@ https.createServer(ssl, app).listen(port, () => {
     console.log("API URL: https://localhost:" + baseAPI);
 });
 
-// Sequelize database connection
+// Create instance of sequelize database connection
 export const sequelize = initSequelize();
 
-// generating database
+// Connect to and setup the database
 sequelize
     .authenticate()
     .then(() => {

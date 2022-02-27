@@ -1,4 +1,4 @@
-import { ModelCtor } from "sequelize";
+import { ModelCtor } from "@sequelize/core";
 const fileReader = require("fs");
 module.exports = (artifactpath: string) => {
     return {

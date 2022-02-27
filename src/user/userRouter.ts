@@ -48,7 +48,7 @@
  */
 
 import { Application, Request, Response } from "express";
-import { Sequelize } from "sequelize";
+import { Sequelize } from "@sequelize/core";
 
 module.exports = (
     app: Application,

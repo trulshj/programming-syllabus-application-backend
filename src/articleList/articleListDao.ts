@@ -1,4 +1,4 @@
-import { Sequelize, Op, FindOptions } from "sequelize";
+import { Sequelize, Op, FindOptions } from "@sequelize/core";
 
 const userFeatures = require("../user/userFeatures");
 const returnAttributes: string[] = [

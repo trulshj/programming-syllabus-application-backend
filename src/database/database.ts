@@ -1,5 +1,5 @@
-// https://sequelize.org/v5/manual/
-import { Sequelize } from "sequelize";
+// https://sequelize.org/v7/manual/
+import { Sequelize } from "@sequelize/core";
 import { Article } from "./models/Article.model";
 import { File } from "./models/File.model";
 import { Grade } from "./models/Grade.model";
@@ -15,11 +15,11 @@ module.exports = () => {
             //models
 
             // Article 1:m
-            File.belongsTo(Article);
-            Article.hasMany(File);
+            File.belongsTo(Article, { foreignKey: "articleId" });
+            Article.hasMany(File, { foreignKey: "articleId" });
 
-            Image.belongsTo(Article);
-            Article.hasMany(Image);
+            Image.belongsTo(Article, { foreignKey: "articleId" });
+            Article.hasMany(Image, { foreignKey: "articleId" });
 
             // User 1:m
             Article.belongsTo(User, { foreignKey: "authorId" });

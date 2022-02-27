@@ -1,6 +1,6 @@
 // file for sharing methods with other function on the server
 
-import { Sequelize } from "sequelize";
+import { Sequelize } from "@sequelize/core";
 import { IUser } from "./IUser";
 import { pbkdf2 } from "crypto";
 

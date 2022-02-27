@@ -1,4 +1,4 @@
-import { Sequelize, Op } from "sequelize";
+import { Sequelize, Op } from "@sequelize/core";
 import { pbkdf2, randomBytes } from "crypto";
 import { IUser } from "./IUser";
 

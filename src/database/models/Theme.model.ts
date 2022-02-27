@@ -1,20 +1,36 @@
-import { DataTypes, Model } from "sequelize";
+import {
+    CreationOptional,
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    Model,
+} from "@sequelize/core";
 import { sequelize } from "../../app";
 
-export const Theme = sequelize.define<Model<any, any>, unknown>(
-    "Theme",
+export class Theme extends Model<
+    InferAttributes<Theme>,
+    InferCreationAttributes<Theme>
+> {
+    declare id: CreationOptional<number>;
+    declare name: string;
+
+    declare createdAt: CreationOptional<Date>;
+    declare updatedAt: CreationOptional<Date>;
+}
+
+Theme.init(
     {
         id: {
             type: DataTypes.INTEGER.UNSIGNED,
-            primaryKey: true,
             autoIncrement: true,
+            primaryKey: true,
         },
         name: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(128),
+            allowNull: false,
         },
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
     },
-    {
-        createdAt: false,
-        updatedAt: false,
-    }
+    { sequelize, tableName: "Themes" }
 );
