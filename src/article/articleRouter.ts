@@ -13,11 +13,11 @@ import { IArticle } from "./IArticle";
  *         type: string
  *       description:
  *         type: string
- *       publication_date:
+ *       publicationDate:
  *         type: string
- *       change_date:
+ *       updatedDate:
  *         type: string
- *       time_to_complete:
+ *       timeToComplete:
  *         type: integer
  *       subjects:
  *         type: array
@@ -45,11 +45,11 @@ import { IArticle } from "./IArticle";
  *     properties:
  *       title:
  *         type: string
- *       author_id:
+ *       authorId:
  *         type: string
  *       description:
  *         type: string
- *       time_to_complete:
+ *       timeToComplete:
  *         type: integer
  *       subject:
  *         type: array
@@ -75,7 +75,7 @@ import { IArticle } from "./IArticle";
  *          properties:
  *            file_name:
  *              type: string
- *            alt_text:
+ *            altText:
  *              type: string
  *
  *
@@ -88,9 +88,9 @@ import { IArticle } from "./IArticle";
  *         type: string
  *       publications_date:
  *         type: string
- *       change_date:
+ *       updatedDate:
  *         type: string
- *       time_to_complete:
+ *       timeToComplete:
  *         type: integer
  *       subjects:
  *         type: array

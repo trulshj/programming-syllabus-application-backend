@@ -25,7 +25,7 @@ function verifyUser(
                     },
                 })
                 .then(async (oneArticle: any) => {
-                    if (oneArticle.author_id == userId) {
+                    if (oneArticle.authorId == userId) {
                         res(true);
                     } else {
                         res(await userFeatures.isAdmin(userId, sequelize));
@@ -42,100 +42,96 @@ module.exports = (sequelize: Sequelize) => {
     return {
         getArticle: (articleNumber: number, userId?: string) => {
             return <Promise<undefined | JSON>>(
-                new Promise(async (res, error) => {
-                    if (!isNaN(articleNumber)) {
-                        sequelize
-                            .model("Article")
-                            .findOne({
-                                attributes: [
-                                    "title",
-                                    "description",
-                                    "publication_date",
-                                    "change_date",
-                                    "time_to_complete",
-                                    "view_counter",
-                                    "published",
-                                    "author_id",
-                                ],
-                                where: { id: articleNumber },
-                                include: [
-                                    {
-                                        attributes: ["name", "id"],
-                                        model: sequelize.model("file"),
-                                        required: false,
-                                    },
-                                    {
-                                        attributes: ["file_id", "alt_text"],
-                                        model: sequelize.model("image"),
-                                        required: false,
-                                    },
-                                    {
-                                        attributes: ["id", "name"],
-                                        model: sequelize.model("subject"),
-                                        required: false,
-                                        through: { attributes: [] },
-                                    },
-                                    {
-                                        model: sequelize.model("user"),
-                                        required: true,
-                                        attributes: ["username"],
-                                    },
-                                    {
-                                        model: sequelize.model("theme"),
-                                        required: false,
-                                        attributes: ["name"],
-                                        through: { attributes: [] },
-                                    },
-                                    {
-                                        model: sequelize.model("grade_level"),
-                                        required: false,
-                                        attributes: ["name"],
-                                        through: { attributes: [] },
-                                    },
-                                    {
-                                        model: sequelize.model("tool"),
-                                        required: false,
-                                        attributes: ["name"],
-                                        through: { attributes: [] },
-                                    },
-                                ],
-                            })
-                            .then(async (oneArticle: any) => {
-                                if (oneArticle != null) {
-                                    if (!oneArticle.dataValues.published) {
-                                        if (
-                                            oneArticle.dataValues.author_id ==
-                                            userId
-                                        ) {
-                                            delete oneArticle.dataValues[
-                                                "author_id"
-                                            ];
-                                            res(oneArticle.dataValues);
-                                        } else if (
-                                            await userFeatures.isAdmin(
-                                                userId,
-                                                sequelize
-                                            )
-                                        ) {
-                                            delete oneArticle.dataValues[
-                                                "author_id"
-                                            ];
-                                            res(oneArticle.dataValues);
-                                        } else error("access denied");
-                                    } else {
+                new Promise(async (res, reject) => {
+                    if (isNaN(articleNumber)) {
+                        reject("Not a valid article number");
+                    }
+                    sequelize
+                        .model("Article")
+                        .findOne({
+                            attributes: [
+                                "title",
+                                "description",
+                                "publicationDate",
+                                "updatedDate",
+                                "timeToComplete",
+                                "viewCounter",
+                                "published",
+                                "authorId",
+                            ],
+                            where: { id: articleNumber },
+                            include: [
+                                {
+                                    model: sequelize.model("File"),
+                                    attributes: ["name", "id"],
+                                    required: false,
+                                },
+                                {
+                                    model: sequelize.model("Image"),
+                                    attributes: ["fileId", "altText"],
+                                    required: false,
+                                },
+                                {
+                                    model: sequelize.model("Subject"),
+                                    attributes: ["id", "name"],
+                                    required: false,
+                                    through: { attributes: [] },
+                                },
+                                {
+                                    model: sequelize.model("User"),
+                                    required: true,
+                                    attributes: ["username"],
+                                },
+                                {
+                                    model: sequelize.model("Theme"),
+                                    required: false,
+                                    attributes: ["name"],
+                                    through: { attributes: [] },
+                                },
+                                {
+                                    model: sequelize.model("Grade"),
+                                    required: false,
+                                    attributes: ["name"],
+                                    through: { attributes: [] },
+                                },
+                                {
+                                    model: sequelize.model("Tool"),
+                                    required: false,
+                                    attributes: ["name"],
+                                    through: { attributes: [] },
+                                },
+                            ],
+                        })
+                        .then(async (oneArticle: any) => {
+                            if (oneArticle != null) {
+                                if (!oneArticle.dataValues.published) {
+                                    if (
+                                        oneArticle.dataValues.authorId == userId
+                                    ) {
                                         delete oneArticle.dataValues[
-                                            "author_id"
+                                            "authorId"
                                         ];
                                         res(oneArticle.dataValues);
-                                    }
+                                    } else if (
+                                        await userFeatures.isAdmin(
+                                            userId,
+                                            sequelize
+                                        )
+                                    ) {
+                                        delete oneArticle.dataValues[
+                                            "authorId"
+                                        ];
+                                        res(oneArticle.dataValues);
+                                    } else reject("access denied");
                                 } else {
-                                    error("can't find article");
+                                    delete oneArticle.dataValues["authorId"];
+                                    res(oneArticle.dataValues);
                                 }
-                            })
-                            .catch((erro: JSON) => error(erro));
-                    } else {
-                        error("not a valid article url");
-                    }
+                            } else {
+                                reject("can't find article");
+                            }
+                        })
+                        .catch((erro: JSON) => reject(erro));
                 })
             );
         },
@@ -165,9 +161,8 @@ module.exports = (sequelize: Sequelize) => {
                                     .create({
                                         title: article.title,
                                         description: article.description,
-                                        time_to_complete:
-                                            article.time_to_complete,
-                                        author_id: article.author_id,
+                                        timeToComplete: article.timeToComplete,
+                                        authorId: article.authorId,
                                     })
                                     .then((articeCreated: any) => {
                                         if (articeCreated.id) {
@@ -199,16 +194,15 @@ module.exports = (sequelize: Sequelize) => {
                                                                 files.file;
                                                         }
                                                         await sequelize
-                                                            .model("file")
+                                                            .model("File")
                                                             .create({
-                                                                article_id:
+                                                                ArticleId:
                                                                     articeCreated.id,
                                                                 file_name:
                                                                     oneFile.file_name,
-                                                                file_id:
-                                                                    fomrsFile.path.split(
-                                                                        "/"
-                                                                    )[1],
+                                                                fileId: fomrsFile.path.split(
+                                                                    "/"
+                                                                )[1],
                                                             });
                                                     }
                                                 );
@@ -242,26 +236,22 @@ module.exports = (sequelize: Sequelize) => {
                                                                 files.file;
                                                         }
                                                         await sequelize
-                                                            .model("image")
+                                                            .model("Image")
                                                             .create({
-                                                                article_id:
+                                                                ArticleId:
                                                                     articeCreated.id,
-                                                                alt_text:
-                                                                    oneImage.alt_text,
-                                                                file_id:
-                                                                    fomrsFile.path.split(
-                                                                        "/"
-                                                                    )[1],
+                                                                altText:
+                                                                    oneImage.altText,
+                                                                fileId: fomrsFile.path.split(
+                                                                    "/"
+                                                                )[1],
                                                             });
                                                     }
                                                 );
                                             }
 
-                                            if (
-                                                article.grade_levels !=
-                                                undefined
-                                            ) {
-                                                article.grade_levels.map(
+                                            if (article.grades != undefined) {
+                                                article.grades.map(
                                                     async (oneGrade) => {
                                                         await sequelize
                                                             .model(
@@ -285,7 +275,7 @@ module.exports = (sequelize: Sequelize) => {
                                                                 "ToolArticle"
                                                             )
                                                             .create({
-                                                                article_id:
+                                                                ArticleId:
                                                                     articeCreated.id,
                                                                 tool_id:
                                                                     oneTool.id,
@@ -333,183 +323,156 @@ module.exports = (sequelize: Sequelize) => {
                                 }
                                 article = JSON.parse(fields.body);
                                 if (
-                                    await verifyUser(
-                                        article.author_id,
+                                    !(await verifyUser(
+                                        article.authorId,
                                         articleId,
                                         sequelize
-                                    )
+                                    ))
                                 ) {
-                                    await sequelize
-                                        .model("Article")
-                                        .update(
-                                            {
-                                                title: article.title,
-                                                description:
-                                                    article.description,
-                                                time_to_complete:
-                                                    article.time_to_complete,
-                                            },
-                                            {
-                                                silent: await userFeatures.isAdmin(
-                                                    article.author_id,
-                                                    sequelize
-                                                ),
-                                                where: {
-                                                    id: articleId,
-                                                },
-                                            }
-                                        )
-                                        .then(
-                                            async (sequlizeResponse: any[]) => {
-                                                if (article.id != undefined) {
-                                                    if (
-                                                        article.files !=
-                                                        undefined
-                                                    ) {
-                                                        article.files.map(
-                                                            async (
-                                                                oneFile: any
-                                                            ) => {
-                                                                let fomrsFile: any =
-                                                                    "";
-                                                                if (
-                                                                    Array.isArray(
-                                                                        files.file
-                                                                    )
-                                                                ) {
-                                                                    const tempFile: any =
-                                                                        files.file.find(
-                                                                            (input: {
-                                                                                name: string;
-                                                                            }) => {
-                                                                                return (
-                                                                                    input.name ===
-                                                                                    oneFile.file_name
-                                                                                );
-                                                                            }
-                                                                        );
-                                                                    fomrsFile =
-                                                                        tempFile;
-                                                                } else {
-                                                                    fomrsFile =
-                                                                        files.file;
-                                                                }
-                                                                await sequelize
-                                                                    .model(
-                                                                        "file"
-                                                                    )
-                                                                    .upsert({
-                                                                        id: article.id,
-                                                                        file_name:
-                                                                            oneFile.file_name,
-                                                                        file_id:
-                                                                            fomrsFile.path.split(
-                                                                                "/"
-                                                                            )[1],
-                                                                    });
-                                                            }
-                                                        );
-                                                    }
-
-                                                    if (
-                                                        article.images !=
-                                                        undefined
-                                                    ) {
-                                                        article.images.map(
-                                                            async (
-                                                                oneImage
-                                                            ) => {
-                                                                let fomrsFile: any =
-                                                                    "";
-                                                                if (
-                                                                    Array.isArray(
-                                                                        files.file
-                                                                    )
-                                                                ) {
-                                                                    fomrsFile =
-                                                                        files.file.find(
-                                                                            (input: {
-                                                                                name: string;
-                                                                            }) => {
-                                                                                return (
-                                                                                    input.name ===
-                                                                                    oneImage.file_name
-                                                                                );
-                                                                            }
-                                                                        );
-                                                                } else {
-                                                                    fomrsFile =
-                                                                        files.file;
-                                                                }
-                                                                await sequelize
-                                                                    .model(
-                                                                        "image"
-                                                                    )
-                                                                    .upsert({
-                                                                        id: article.id,
-                                                                        alt_text:
-                                                                            oneImage.alt_text,
-                                                                        file_id:
-                                                                            fomrsFile.path.split(
-                                                                                "/"
-                                                                            )[1],
-                                                                    });
-                                                            }
-                                                        );
-                                                    }
-
-                                                    if (
-                                                        article.grade_levels !=
-                                                        undefined
-                                                    ) {
-                                                        article.grade_levels.map(
-                                                            async (
-                                                                oneGrade
-                                                            ) => {
-                                                                await sequelize
-                                                                    .model(
-                                                                        "GradeArticle"
-                                                                    )
-                                                                    .upsert({
-                                                                        articleArticleId:
-                                                                            article.id,
-                                                                        gradeLevelId:
-                                                                            oneGrade.id,
-                                                                    });
-                                                            }
-                                                        );
-                                                    }
-
-                                                    if (
-                                                        article.tools !=
-                                                        undefined
-                                                    ) {
-                                                        article.tools.map(
-                                                            async (oneTool) => {
-                                                                await sequelize
-                                                                    .model(
-                                                                        "ToolArticle"
-                                                                    )
-                                                                    .upsert({
-                                                                        article_id:
-                                                                            article.id,
-                                                                        tool_id:
-                                                                            oneTool.id,
-                                                                    });
-                                                            }
-                                                        );
-                                                    }
-                                                }
-                                                res(sequlizeResponse);
-                                            }
-                                        )
-                                        .catch((err: any) => {
-                                            console.error(err);
-                                            error("cant update article");
-                                        });
-                                } else {
-                                    error("user not allowed to update article");
+                                    error(
+                                        "User is not allowed to update article"
+                                    );
+                                    return;
                                 }
+                                await sequelize
+                                    .model("Article")
+                                    .update(
+                                        {
+                                            title: article.title,
+                                            description: article.description,
+                                            timeToComplete:
+                                                article.timeToComplete,
+                                        },
+                                        {
+                                            silent: await userFeatures.isAdmin(
+                                                article.authorId,
+                                                sequelize
+                                            ),
+                                            where: {
+                                                id: articleId,
+                                            },
+                                        }
+                                    )
+                                    .then(async (sequlizeResponse: any[]) => {
+                                        if (article.id != undefined) {
+                                            if (article.files != undefined) {
+                                                article.files.map(
+                                                    async (oneFile: any) => {
+                                                        let fomrsFile: any = "";
+                                                        if (
+                                                            Array.isArray(
+                                                                files.file
+                                                            )
+                                                        ) {
+                                                            const tempFile: any =
+                                                                files.file.find(
+                                                                    (input: {
+                                                                        name: string;
+                                                                    }) => {
+                                                                        return (
+                                                                            input.name ===
+                                                                            oneFile.file_name
+                                                                        );
+                                                                    }
+                                                                );
+                                                            fomrsFile =
+                                                                tempFile;
+                                                        } else {
+                                                            fomrsFile =
+                                                                files.file;
+                                                        }
+                                                        await sequelize
+                                                            .model("File")
+                                                            .upsert({
+                                                                id: article.id,
+                                                                file_name:
+                                                                    oneFile.file_name,
+                                                                fileId: fomrsFile.path.split(
+                                                                    "/"
+                                                                )[1],
+                                                            });
+                                                    }
+                                                );
+                                            }
+
+                                            if (article.images != undefined) {
+                                                article.images.map(
+                                                    async (oneImage) => {
+                                                        let fomrsFile: any = "";
+                                                        if (
+                                                            Array.isArray(
+                                                                files.file
+                                                            )
+                                                        ) {
+                                                            fomrsFile =
+                                                                files.file.find(
+                                                                    (input: {
+                                                                        name: string;
+                                                                    }) => {
+                                                                        return (
+                                                                            input.name ===
+                                                                            oneImage.file_name
+                                                                        );
+                                                                    }
+                                                                );
+                                                        } else {
+                                                            fomrsFile =
+                                                                files.file;
+                                                        }
+                                                        await sequelize
+                                                            .model("image")
+                                                            .upsert({
+                                                                id: article.id,
+                                                                altText:
+                                                                    oneImage.altText,
+                                                                fileId: fomrsFile.path.split(
+                                                                    "/"
+                                                                )[1],
+                                                            });
+                                                    }
+                                                );
+                                            }
+
+                                            if (article.grades != undefined) {
+                                                article.grades.map(
+                                                    async (oneGrade) => {
+                                                        await sequelize
+                                                            .model(
+                                                                "GradeArticle"
+                                                            )
+                                                            .upsert({
+                                                                articleArticleId:
+                                                                    article.id,
+                                                                gradeLevelId:
+                                                                    oneGrade.id,
+                                                            });
+                                                    }
+                                                );
+                                            }
+
+                                            if (article.tools != undefined) {
+                                                article.tools.map(
+                                                    async (oneTool) => {
+                                                        await sequelize
+                                                            .model(
+                                                                "ToolArticle"
+                                                            )
+                                                            .upsert({
+                                                                ArticleId:
+                                                                    article.id,
+                                                                tool_id:
+                                                                    oneTool.id,
+                                                            });
+                                                    }
+                                                );
+                                            }
+                                        }
+                                        res(sequlizeResponse);
+                                    })
+                                    .catch((err: any) => {
+                                        console.error(err);
+                                        error("Could not update article");
+                                    });
                             }
                         );
                     } catch (err: any) {

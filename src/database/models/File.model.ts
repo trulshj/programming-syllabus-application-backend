@@ -1,25 +1,19 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../../app";
 
-module.exports = (sequelize: Sequelize) => {
-    const fileModel = sequelize.define<Model<any, any>, unknown>(
-        "File",
-        {
-            id: {
-                type: DataTypes.STRING(64),
-                primaryKey: true,
-            },
-            name: {
-                type: DataTypes.STRING,
-            },
-            article_id: {
-                type: DataTypes.BIGINT.UNSIGNED,
-                foreignKey: true,
-            },
+export const File = sequelize.define<Model<any, any>, unknown>(
+    "File",
+    {
+        id: {
+            type: DataTypes.STRING(64),
+            primaryKey: true,
         },
-        {
-            createdAt: true,
-            updatedAt: true,
-        }
-    );
-    return fileModel;
-};
+        name: {
+            type: DataTypes.STRING,
+        },
+    },
+    {
+        createdAt: true,
+        updatedAt: true,
+    }
+);

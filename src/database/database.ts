@@ -1,61 +1,66 @@
 // https://sequelize.org/v5/manual/
 import { Sequelize } from "sequelize";
+import { Article } from "./models/Article.model";
+import { File } from "./models/File.model";
+import { Grade } from "./models/Grade.model";
+import { Image } from "./models/Image.model";
+import { Subject } from "./models/Subject.model";
+import { Theme } from "./models/Theme.model";
+import { Tool } from "./models/Tool.model";
+import { User } from "./models/User.model";
+
 module.exports = () => {
     return {
         async setup(sequelize: Sequelize): Promise<void> {
             //models
-            const Article = require("./models/Article.model")(sequelize);
-            const User = require("./models/User.model")(sequelize);
-            const File = require("./models/File.model")(sequelize);
-            const Subject = require("./models/Subject.model")(sequelize);
-            const Image = require("./models/Image.model")(sequelize);
-            const Tool = require("./models/Tool.model")(sequelize);
-            const Theme = require("./models/Theme.model")(sequelize);
-            const Grade = require("./models/Grade.model")(sequelize);
 
             // Article 1:m
-            sequelize.model("Article").hasMany(File);
-            sequelize.model("Article").hasMany(Image);
+            File.belongsTo(Article);
+            Article.hasMany(File);
+
+            Image.belongsTo(Article);
+            Article.hasMany(Image);
 
             // User 1:m
-            sequelize.model("User").hasMany(Article);
+            Article.belongsTo(User, { foreignKey: "authorId" });
+            User.hasMany(Article, { foreignKey: "authorId" });
 
             // Article Subject n:m
-            sequelize.model("Article").belongsToMany(Subject, {
+            Article.belongsToMany(Subject, {
                 through: "SubjectArticle",
                 timestamps: false,
             });
-            sequelize.model("Subject").belongsToMany(Article, {
+            Subject.belongsToMany(Article, {
                 through: "SubjectArticle",
                 timestamps: false,
             });
 
             // Article Tool n:m
-            sequelize.model("Article").belongsToMany(Tool, {
+            Article.belongsToMany(Tool, {
                 through: "ToolArticle",
                 timestamps: false,
             });
-            sequelize.model("Tool").belongsToMany(Article, {
+            Tool.belongsToMany(Article, {
                 through: "ToolArticle",
                 timestamps: false,
             });
 
             // Article Theme n:m
-            sequelize.model("Article").belongsToMany(Theme, {
+            Article.belongsToMany(Theme, {
                 through: "ThemeArticle",
                 timestamps: false,
             });
-            sequelize.model("Theme").belongsToMany(Article, {
+            Theme.belongsToMany(Article, {
                 through: "ThemeArticle",
                 timestamps: false,
             });
 
             // Article Grade n:m
-            sequelize.model("Article").belongsToMany(Grade, {
+            Article.belongsToMany(Grade, {
                 through: "GradeArticle",
                 timestamps: false,
             });
-            sequelize.model("Grade").belongsToMany(Article, {
+            Grade.belongsToMany(Article, {
                 through: "GradeArticle",
                 timestamps: false,
             });

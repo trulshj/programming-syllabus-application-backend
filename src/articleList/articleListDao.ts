@@ -5,7 +5,7 @@ const returnAttributes: string[] = [
     "id",
     "title",
     "description",
-    "change_date",
+    "updatedDate",
     "published",
 ];
 
@@ -39,11 +39,11 @@ module.exports = () => {
                 let getList: FindOptions = {
                     attributes: returnAttributes,
                     where: {
-                        author_id: userID,
+                        authorId: userID,
                     },
                     include: [
                         {
-                            attributes: ["file_id", "alt_text"],
+                            attributes: ["fileId", "altText"],
                             model: sequelize.model("image"),
                             required: false,
                             limit: 1,
@@ -64,7 +64,7 @@ module.exports = () => {
                     },
                     include: [
                         {
-                            attributes: ["file_id", "alt_text"],
+                            attributes: ["fileId", "altText"],
                             model: sequelize.model("image"),
                             required: false,
                             limit: 1,
@@ -98,7 +98,7 @@ module.exports = () => {
                     },
                     include: [
                         {
-                            attributes: ["file_id", "alt_text"],
+                            attributes: ["fileId", "altText"],
                             model: sequelize.model("image"),
                             required: false,
                             limit: 1,

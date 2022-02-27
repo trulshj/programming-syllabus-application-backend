@@ -44,7 +44,7 @@ test("trying to fetch unpublished by owned user", (done) => {
         )
         .then((article: IArticle) => {
             expect(article).toBeDefined();
-            expect(article.time_to_complete).toBe(20);
+            expect(article.timeToComplete).toBe(20);
             done();
         });
 }, 6000);
@@ -58,7 +58,7 @@ test("trying to fetch unpublished by admin", (done) => {
         )
         .then((article: IArticle) => {
             expect(article).toBeDefined();
-            expect(article.time_to_complete).toBe(20);
+            expect(article.timeToComplete).toBe(20);
             done();
         });
 }, 6000);

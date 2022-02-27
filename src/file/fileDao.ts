@@ -11,18 +11,18 @@ module.exports = (artifactpath: string) => {
                 // images
                 await imageDatabase
                     .findOne({
-                        attributes: ["file_id"],
+                        attributes: ["fileId"],
                         where: {
-                            file_id: fileSha,
+                            fileId: fileSha,
                         },
                     })
                     .then(async (oneImage) => {
                         if (oneImage != undefined) {
                             fileReader.stat(
-                                artifactpath + oneImage.file_id,
+                                artifactpath + oneImage.fileId,
                                 (error: any) => {
                                     if (!error) {
-                                        res([artifactpath + oneImage.file_id]);
+                                        res([artifactpath + oneImage.fileId]);
                                         return;
                                     } else {
                                         console.log(
@@ -38,20 +38,20 @@ module.exports = (artifactpath: string) => {
                             // generic files
                             await fileDatabase
                                 .findOne({
-                                    attributes: ["file_id", "file_name"],
+                                    attributes: ["fileId", "file_name"],
                                     where: {
-                                        file_id: fileSha,
+                                        fileId: fileSha,
                                     },
                                 })
                                 .then(async (oneFile) => {
                                     if (oneFile != undefined) {
                                         await fileReader.stat(
-                                            artifactpath + oneFile.file_id,
+                                            artifactpath + oneFile.fileId,
                                             (error: any) => {
                                                 if (!error) {
                                                     res([
                                                         artifactpath +
-                                                            oneFile.file_id,
+                                                            oneFile.fileId,
                                                         oneFile.file_name,
                                                     ]);
                                                 } else {

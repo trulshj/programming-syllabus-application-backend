@@ -38,7 +38,7 @@ beforeAll(async (done: DoneCallback) => {
 test("fetching artifacts(files) from backend", async (done) => {
     const file = require("./fileDao");
     file(artifactPath)
-        .getFile(sequelize.model("file"), sequelize.model("image"), fileSha)
+        .getFile(sequelize.model("File"), sequelize.model("image"), fileSha)
         .then((res: string[]) => {
             expect(res).toBeDefined();
             expect(res[1]).toBe("Fil nr 1.txt");
@@ -50,7 +50,7 @@ test("fetching artifacts(files) from backend, file is in database but missing ph
     const file = require("./fileDao");
     await file(artifactPath)
         .getFile(
-            sequelize.model("file"),
+            sequelize.model("File"),
             sequelize.model("image"),
             "67ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e"
         )
@@ -64,7 +64,7 @@ test("fetching artifacts(files) from backend, file not in database", async (done
     const file = require("./fileDao");
     file(artifactPath)
         .getFile(
-            sequelize.model("file"),
+            sequelize.model("File"),
             sequelize.model("image"),
             "10ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e"
         )
@@ -77,7 +77,7 @@ test("fetching artifacts(files) from backend, file not in database", async (done
 test("fetching artifacts(image) from backend", async (done) => {
     const file = require("./fileDao");
     file(artifactPath)
-        .getFile(sequelize.model("file"), sequelize.model("image"), imageSha)
+        .getFile(sequelize.model("File"), sequelize.model("image"), imageSha)
         .then((res: string[]) => {
             expect(res).toBeDefined();
             done();
@@ -88,7 +88,7 @@ test("fetching artifacts(images) from backend, file is in database but missing p
     const file = require("./fileDao");
     file(artifactPath)
         .getFile(
-            sequelize.model("file"),
+            sequelize.model("File"),
             sequelize.model("image"),
             "erty5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e"
         )

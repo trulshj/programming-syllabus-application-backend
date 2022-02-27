@@ -2,18 +2,18 @@ export interface IArticle {
     title: string;
     id?: number;
     description: string;
-    publication_date?: string;
-    change_date?: string;
-    time_to_complete?: number;
-    view_counter?: number;
+    publicationDate?: string;
+    updatedDate?: string;
+    timeToComplete?: number;
+    viewCounter?: number;
     published?: boolean;
     files: {
         file_name: string;
-        file_id: string;
+        fileId: string;
     }[];
     images: {
-        file_id: string;
-        alt_text: string;
+        fileId: string;
+        altText: string;
         file_name: string;
     }[];
     subjects: {
@@ -27,7 +27,7 @@ export interface IArticle {
         name: string;
         id: number;
     }[];
-    grade_levels: {
+    grades: {
         name: string;
         id: number;
     }[];
@@ -35,5 +35,5 @@ export interface IArticle {
         name: string;
         id: number;
     }[];
-    author_id: string;
+    authorId: string;
 }

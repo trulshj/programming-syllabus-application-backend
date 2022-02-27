@@ -1,8 +1,8 @@
 {
     "01": {
-        "tool_name": "turtle"
+        "name": "turtle"
     },
     "02": {
-        "tool_name": "numpy"
+        "name": "numpy"
     }
 }

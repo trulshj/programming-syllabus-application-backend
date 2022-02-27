@@ -1,21 +1,20 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../../app";
 
-module.exports = (sequelize: Sequelize) => {
-    return sequelize.define<Model<any, any>, unknown>(
-        "Theme",
-        {
-            id: {
-                type: DataTypes.INTEGER.UNSIGNED,
-                primaryKey: true,
-                autoIncrement: true,
-            },
-            name: {
-                type: DataTypes.STRING,
-            },
+export const Theme = sequelize.define<Model<any, any>, unknown>(
+    "Theme",
+    {
+        id: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            primaryKey: true,
+            autoIncrement: true,
         },
-        {
-            createdAt: false,
-            updatedAt: false,
-        }
-    );
-};
+        name: {
+            type: DataTypes.STRING,
+        },
+    },
+    {
+        createdAt: false,
+        updatedAt: false,
+    }
+);

@@ -35,15 +35,15 @@ https.createServer(ssl, app).listen(port, () => {
 });
 
 // Sequelize database connection
-const sequlize = initSequelize();
+export const sequelize = initSequelize();
 
 // generating database
-sequlize
+sequelize
     .authenticate()
     .then(() => {
         const database = require("./database/database");
         database()
-            .setup(sequlize)
+            .setup(sequelize)
             .then(() => console.log("Database setup finised"));
     })
     .catch((err: any) => {
@@ -88,4 +88,4 @@ const swaggerUi = require("swagger-ui-express");
 app.use(swaggerEndPoint, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //router for the rest of the api-endpoints
-routes(app, baseAPI, sequlize);
+routes(app, baseAPI, sequelize);

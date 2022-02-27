@@ -4,6 +4,6 @@ export interface IUser {
     email: string;
     password?: string;
     salt?: string;
-    role_id?: number;
+    roleId?: number;
     verified?: boolean;
 }
