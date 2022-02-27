@@ -7,15 +7,15 @@ import { IArticle } from "./IArticle";
  * definitions:
  *   getArticleResponse:
  *     properties:
- *       article_title:
+ *       title:
  *         type: string
  *       article_author:
  *         type: string
- *       article_description:
+ *       description:
  *         type: string
  *       publication_date:
  *         type: string
- *       article_change_date:
+ *       change_date:
  *         type: string
  *       time_to_complete:
  *         type: integer
@@ -43,11 +43,11 @@ import { IArticle } from "./IArticle";
  *   postArticleRequest:
  *     required:
  *     properties:
- *       article_title:
+ *       title:
  *         type: string
  *       author_id:
  *         type: string
- *       article_description:
+ *       description:
  *         type: string
  *       time_to_complete:
  *         type: integer
@@ -82,13 +82,13 @@ import { IArticle } from "./IArticle";
  *
  *   getArticleQueryResponse:
  *     properties:
- *       article_title:
+ *       title:
  *         type: string
  *       article_author:
  *         type: string
  *       publications_date:
  *         type: string
- *       article_change_date:
+ *       change_date:
  *         type: string
  *       time_to_complete:
  *         type: integer

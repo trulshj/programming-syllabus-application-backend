@@ -30,7 +30,8 @@ const ssl = {
 };
 https.createServer(ssl, app).listen(port, () => {
     console.log("Backend started");
-    console.log("API: https://localhost:" + port + swaggerEndPoint);
+    console.log("API Doc: https://localhost:" + port + swaggerEndPoint);
+    console.log("API URL: https://localhost:" + baseAPI);
 });
 
 // Sequelize database connection
@@ -55,10 +56,11 @@ sequlize
 const swaggerDefinition = {
     info: {
         // API informations (required)
-        title: 'Backend API for "name of product"', // Title (required),
+        title: "Teaching Articles API", // Title (required),
         swagger: "2.0",
         version: "0.0.1", // Version (required)
-        description: "Backend API for bachelor", // Description (optional)
+        description:
+            "Backend API for fetching and creating articles about programming within different subjects", // Description (optional)
     },
     servers: [
         {

@@ -1,19 +1,19 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 
 module.exports = (sequelize: Sequelize) => {
-    const fileModel = sequelize.define<Model<any, any>, unknown>(
-        "file",
+    const imageModel = sequelize.define<Model<any, any>, unknown>(
+        "Image",
         {
             file_id: {
                 type: DataTypes.STRING(64),
                 primaryKey: true,
             },
-            file_name: {
-                type: DataTypes.STRING,
-            },
             article_id: {
                 type: DataTypes.BIGINT.UNSIGNED,
                 foreignKey: true,
+            },
+            alt_text: {
+                type: DataTypes.STRING,
             },
         },
         {
@@ -21,5 +21,5 @@ module.exports = (sequelize: Sequelize) => {
             updatedAt: true,
         }
     );
-    return fileModel;
+    return imageModel;
 };

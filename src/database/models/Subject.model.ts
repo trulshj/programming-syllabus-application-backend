@@ -2,14 +2,14 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 
 module.exports = (sequelize: Sequelize) => {
     return sequelize.define<Model<any, any>, unknown>(
-        "theme",
+        "Subject",
         {
-            theme_id: {
-                type: DataTypes.INTEGER,
+            id: {
+                type: DataTypes.INTEGER.UNSIGNED,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            theme_name: {
+            name: {
                 type: DataTypes.STRING,
             },
         },

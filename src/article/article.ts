@@ -18,10 +18,10 @@ function verifyUser(
     return new Promise<boolean>((res) => {
         try {
             sequelize
-                .model("article")
+                .model("Article")
                 .findOne({
                     where: {
-                        article_id: articleId,
+                        id: articleId,
                     },
                 })
                 .then(async (oneArticle: any) => {
@@ -45,22 +45,22 @@ module.exports = (sequelize: Sequelize) => {
                 new Promise(async (res, error) => {
                     if (!isNaN(articleNumber)) {
                         sequelize
-                            .model("article")
+                            .model("Article")
                             .findOne({
                                 attributes: [
-                                    "article_title",
-                                    "article_description",
+                                    "title",
+                                    "description",
                                     "publication_date",
-                                    "article_change_date",
+                                    "change_date",
                                     "time_to_complete",
                                     "view_counter",
                                     "published",
                                     "author_id",
                                 ],
-                                where: { article_id: articleNumber },
+                                where: { id: articleNumber },
                                 include: [
                                     {
-                                        attributes: ["file_name", "file_id"],
+                                        attributes: ["name", "id"],
                                         model: sequelize.model("file"),
                                         required: false,
                                     },
@@ -70,10 +70,7 @@ module.exports = (sequelize: Sequelize) => {
                                         required: false,
                                     },
                                     {
-                                        attributes: [
-                                            "subject_id",
-                                            "subject_name",
-                                        ],
+                                        attributes: ["id", "name"],
                                         model: sequelize.model("subject"),
                                         required: false,
                                         through: { attributes: [] },
@@ -86,19 +83,19 @@ module.exports = (sequelize: Sequelize) => {
                                     {
                                         model: sequelize.model("theme"),
                                         required: false,
-                                        attributes: ["theme_name"],
+                                        attributes: ["name"],
                                         through: { attributes: [] },
                                     },
                                     {
                                         model: sequelize.model("grade_level"),
                                         required: false,
-                                        attributes: ["grade_name"],
+                                        attributes: ["name"],
                                         through: { attributes: [] },
                                     },
                                     {
                                         model: sequelize.model("tool"),
                                         required: false,
-                                        attributes: ["tool_name"],
+                                        attributes: ["name"],
                                         through: { attributes: [] },
                                     },
                                 ],
@@ -164,17 +161,16 @@ module.exports = (sequelize: Sequelize) => {
                                 article = JSON.parse(fields.body);
                                 //article data from json
                                 await sequelize
-                                    .model("article")
+                                    .model("Article")
                                     .create({
-                                        article_title: article.article_title,
-                                        article_description:
-                                            article.article_description,
+                                        title: article.title,
+                                        description: article.description,
                                         time_to_complete:
                                             article.time_to_complete,
                                         author_id: article.author_id,
                                     })
                                     .then((articeCreated: any) => {
-                                        if (articeCreated.article_id) {
+                                        if (articeCreated.id) {
                                             // file data from forms
                                             if (article.files != undefined) {
                                                 article.files.map(
@@ -206,7 +202,7 @@ module.exports = (sequelize: Sequelize) => {
                                                             .model("file")
                                                             .create({
                                                                 article_id:
-                                                                    articeCreated.article_id,
+                                                                    articeCreated.id,
                                                                 file_name:
                                                                     oneFile.file_name,
                                                                 file_id:
@@ -249,7 +245,7 @@ module.exports = (sequelize: Sequelize) => {
                                                             .model("image")
                                                             .create({
                                                                 article_id:
-                                                                    articeCreated.article_id,
+                                                                    articeCreated.id,
                                                                 alt_text:
                                                                     oneImage.alt_text,
                                                                 file_id:
@@ -269,13 +265,13 @@ module.exports = (sequelize: Sequelize) => {
                                                     async (oneGrade) => {
                                                         await sequelize
                                                             .model(
-                                                                "grade_in_article"
+                                                                "GradeArticle"
                                                             )
                                                             .create({
                                                                 articleArticleId:
-                                                                    articeCreated.article_id,
+                                                                    articeCreated.id,
                                                                 gradeLevelId:
-                                                                    oneGrade.grade_id,
+                                                                    oneGrade.id,
                                                             });
                                                     }
                                                 );
@@ -286,13 +282,13 @@ module.exports = (sequelize: Sequelize) => {
                                                     async (oneTool) => {
                                                         await sequelize
                                                             .model(
-                                                                "tool_in_article"
+                                                                "ToolArticle"
                                                             )
                                                             .create({
-                                                                articleArticleId:
-                                                                    articeCreated.article_id,
-                                                                toolToolId:
-                                                                    oneTool.tool_id,
+                                                                article_id:
+                                                                    articeCreated.id,
+                                                                tool_id:
+                                                                    oneTool.id,
                                                             });
                                                     }
                                                 );
@@ -344,13 +340,12 @@ module.exports = (sequelize: Sequelize) => {
                                     )
                                 ) {
                                     await sequelize
-                                        .model("article")
+                                        .model("Article")
                                         .update(
                                             {
-                                                article_title:
-                                                    article.article_title,
-                                                article_description:
-                                                    article.article_description,
+                                                title: article.title,
+                                                description:
+                                                    article.description,
                                                 time_to_complete:
                                                     article.time_to_complete,
                                             },
@@ -360,16 +355,13 @@ module.exports = (sequelize: Sequelize) => {
                                                     sequelize
                                                 ),
                                                 where: {
-                                                    article_id: articleId,
+                                                    id: articleId,
                                                 },
                                             }
                                         )
                                         .then(
                                             async (sequlizeResponse: any[]) => {
-                                                if (
-                                                    article.article_id !=
-                                                    undefined
-                                                ) {
+                                                if (article.id != undefined) {
                                                     if (
                                                         article.files !=
                                                         undefined
@@ -407,8 +399,7 @@ module.exports = (sequelize: Sequelize) => {
                                                                         "file"
                                                                     )
                                                                     .upsert({
-                                                                        article_id:
-                                                                            article.article_id,
+                                                                        id: article.id,
                                                                         file_name:
                                                                             oneFile.file_name,
                                                                         file_id:
@@ -455,8 +446,7 @@ module.exports = (sequelize: Sequelize) => {
                                                                         "image"
                                                                     )
                                                                     .upsert({
-                                                                        article_id:
-                                                                            article.article_id,
+                                                                        id: article.id,
                                                                         alt_text:
                                                                             oneImage.alt_text,
                                                                         file_id:
@@ -478,13 +468,13 @@ module.exports = (sequelize: Sequelize) => {
                                                             ) => {
                                                                 await sequelize
                                                                     .model(
-                                                                        "grade_in_article"
+                                                                        "GradeArticle"
                                                                     )
                                                                     .upsert({
                                                                         articleArticleId:
-                                                                            article.article_id,
+                                                                            article.id,
                                                                         gradeLevelId:
-                                                                            oneGrade.grade_id,
+                                                                            oneGrade.id,
                                                                     });
                                                             }
                                                         );
@@ -498,13 +488,13 @@ module.exports = (sequelize: Sequelize) => {
                                                             async (oneTool) => {
                                                                 await sequelize
                                                                     .model(
-                                                                        "tool_in_article"
+                                                                        "ToolArticle"
                                                                     )
                                                                     .upsert({
-                                                                        articleArticleId:
-                                                                            article.article_id,
-                                                                        toolToolId:
-                                                                            oneTool.tool_id,
+                                                                        article_id:
+                                                                            article.id,
+                                                                        tool_id:
+                                                                            oneTool.id,
                                                                     });
                                                             }
                                                         );

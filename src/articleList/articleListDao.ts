@@ -2,17 +2,17 @@ import { Sequelize, Op, FindOptions } from "sequelize";
 
 const userFeatures = require("../user/userFeatures");
 const returnAttributes: string[] = [
-    "article_id",
-    "article_title",
-    "article_description",
-    "article_change_date",
+    "id",
+    "title",
+    "description",
+    "change_date",
     "published",
 ];
 
 function fetchData(options: FindOptions, sequelize: Sequelize): Promise<any> {
     return new Promise((res: any, error: any) => {
         sequelize
-            .model("article")
+            .model("Article")
             .findAll(options)
             .then((articleList: any) => {
                 let output: JSON[] = [];
@@ -87,10 +87,10 @@ module.exports = () => {
                         published: true,
                         [Op.and]: {
                             [Op.or]: {
-                                article_description: {
+                                description: {
                                     [Op.like]: "%" + search + "%",
                                 },
-                                article_title: {
+                                title: {
                                     [Op.like]: "%" + search + "%",
                                 },
                             },

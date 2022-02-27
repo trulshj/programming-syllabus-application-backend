@@ -2,15 +2,16 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 
 module.exports = (sequelize: Sequelize) => {
     return sequelize.define<Model<any, any>, unknown>(
-        "tool",
+        "Grade",
         {
-            tool_id: {
-                type: DataTypes.INTEGER,
+            id: {
+                type: DataTypes.INTEGER.UNSIGNED,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            tool_name: {
+            name: {
                 type: DataTypes.STRING,
+                unique: true,
             },
         },
         {

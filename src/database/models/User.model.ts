@@ -2,9 +2,9 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 
 module.exports = (sequelize: Sequelize) => {
     const userModel = sequelize.define<Model<any, any>, unknown>(
-        "user",
+        "User",
         {
-            user_id: {
+            id: {
                 type: DataTypes.STRING(64),
                 primaryKey: true,
                 unique: true,

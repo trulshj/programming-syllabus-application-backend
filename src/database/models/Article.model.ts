@@ -1,29 +1,23 @@
-import { DataTypes, Model, ModelDefined, Sequelize } from "sequelize";
+import { DataTypes, Model, Sequelize } from "sequelize";
 
 module.exports = (sequelize: Sequelize) => {
     const article = sequelize.define<Model<any, any>, unknown>(
-        "article",
+        "Article",
         {
-            article_id: {
+            id: {
                 type: DataTypes.BIGINT.UNSIGNED,
                 primaryKey: true,
                 unique: true,
                 autoIncrement: true,
             },
-            article_title: {
+            title: {
                 type: DataTypes.STRING,
-            },
-            author_id: {
-                type: DataTypes.STRING(64),
-                foreignKey: true,
-                unique: false,
-                allowNull: false,
             },
             publication_date: {
                 type: DataTypes.DATE,
                 createdAt: true,
             },
-            article_change_date: {
+            change_date: {
                 type: DataTypes.DATE,
             },
             time_to_complete: {
@@ -34,7 +28,7 @@ module.exports = (sequelize: Sequelize) => {
                 defaultValue: false,
                 allowNull: false,
             },
-            article_description: {
+            description: {
                 type: DataTypes.STRING(1234),
             },
             view_counter: {
@@ -44,7 +38,7 @@ module.exports = (sequelize: Sequelize) => {
         },
         {
             createdAt: "publication_date",
-            updatedAt: "article_change_date",
+            updatedAt: "change_date",
         }
     );
 
