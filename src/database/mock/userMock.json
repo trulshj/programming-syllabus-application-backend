@@ -18,8 +18,7 @@
         "id": "7777010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608",
         "email": "user2@user.com",
         "password": "userpassword",
-        "salt": "random salt",
         "roleId": 0,
-        "username": "Just a user2"
+        "username": "testbruker"
     }
 }
