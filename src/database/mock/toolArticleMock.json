@@ -1,0 +1,18 @@
+{
+    "01": {
+        "ArticleId": 2,
+        "ToolId": 1
+    },
+    "02": {
+        "ArticleId": 2,
+        "ToolId": 2
+    },
+    "03": {
+        "ArticleId": 6,
+        "ToolId": 1
+    },
+    "04": {
+        "ArticleId": 5,
+        "ToolId": 2
+    }
+}

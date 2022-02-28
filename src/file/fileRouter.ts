@@ -1,5 +1,5 @@
 import { Application, Request, Response } from "express";
-import { Sequelize } from "sequelize";
+import { Sequelize } from "@sequelize/core";
 const file = require("./fileDao");
 const artifactpath = "./artifacts/";
 /**
@@ -34,7 +34,7 @@ module.exports = (
         //todo find way to validate that id is sha
         const fileSha = req.params.id;
         file(artifactpath)
-            .getFile(sequelize.model("file"), sequelize.model("image"), fileSha)
+            .getFile(sequelize.model("File"), sequelize.model("image"), fileSha)
             .then((fileInfo: string[]) => {
                 if (fileInfo != undefined) {
                     res.status(200).download(

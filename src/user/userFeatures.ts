@@ -1,6 +1,6 @@
 // file for sharing methods with other function on the server
 
-import { Sequelize } from "sequelize";
+import { Sequelize } from "@sequelize/core";
 import { IUser } from "./IUser";
 import { pbkdf2 } from "crypto";
 
@@ -16,7 +16,7 @@ module.exports = {
                     .count({
                         where: {
                             user_id: userId,
-                            role_id: 1,
+                            roleId: 1,
                         },
                     })
                     .then((userCount) => {
@@ -61,8 +61,7 @@ module.exports = {
                                         username:
                                             userRes.getDataValue("username"),
                                         email: userRes.getDataValue("email"),
-                                        role_id:
-                                            userRes.getDataValue("role_id"),
+                                        roleId: userRes.getDataValue("roleId"),
                                         verified:
                                             userRes.getDataValue("verified"),
                                         createdAt:

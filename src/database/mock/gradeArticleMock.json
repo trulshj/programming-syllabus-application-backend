@@ -1,0 +1,22 @@
+{
+    "01": {
+        "GradeId": 1,
+        "ArticleId": 2
+    },
+    "03": {
+        "GradeId": 2,
+        "ArticleId": 2
+    },
+    "04": {
+        "GradeId": 1,
+        "ArticleId": 5
+    },
+    "05": {
+        "GradeId": 2,
+        "ArticleId": 7
+    },
+    "06": {
+        "GradeId": 1,
+        "ArticleId": 8
+    }
+}

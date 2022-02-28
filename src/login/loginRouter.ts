@@ -1,6 +1,6 @@
 import { Application, Request, Response } from "express";
 import { IUser } from "../user/IUser";
-import { Sequelize } from "sequelize";
+import { Sequelize } from "@sequelize/core";
 const userFeature = require("../user/userFeatures");
 
 /**

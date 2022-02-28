@@ -1,5 +1,6 @@
 import { Application, Request, Response } from "express";
-import { Sequelize } from "sequelize";
+import { Sequelize } from "@sequelize/core";
+import { getArticle, getArticles, oldCreateArticle } from "./article";
 import { IArticle } from "./IArticle";
 
 /**
@@ -7,17 +8,17 @@ import { IArticle } from "./IArticle";
  * definitions:
  *   getArticleResponse:
  *     properties:
- *       article_title:
+ *       title:
  *         type: string
  *       article_author:
  *         type: string
- *       article_description:
+ *       description:
  *         type: string
- *       publication_date:
+ *       publicationDate:
  *         type: string
- *       article_change_date:
+ *       updatedDate:
  *         type: string
- *       time_to_complete:
+ *       timeToComplete:
  *         type: integer
  *       subjects:
  *         type: array
@@ -43,13 +44,13 @@ import { IArticle } from "./IArticle";
  *   postArticleRequest:
  *     required:
  *     properties:
- *       article_title:
+ *       title:
  *         type: string
- *       author_id:
+ *       authorId:
  *         type: string
- *       article_description:
+ *       description:
  *         type: string
- *       time_to_complete:
+ *       timeToComplete:
  *         type: integer
  *       subject:
  *         type: array
@@ -75,22 +76,22 @@ import { IArticle } from "./IArticle";
  *          properties:
  *            file_name:
  *              type: string
- *            alt_text:
+ *            altText:
  *              type: string
  *
  *
  *
  *   getArticleQueryResponse:
  *     properties:
- *       article_title:
+ *       title:
  *         type: string
  *       article_author:
  *         type: string
  *       publications_date:
  *         type: string
- *       article_change_date:
+ *       updatedDate:
  *         type: string
- *       time_to_complete:
+ *       timeToComplete:
  *         type: integer
  *       subjects:
  *         type: array
@@ -120,7 +121,6 @@ module.exports = (
     endPoint: string,
     sequelize: Sequelize
 ) => {
-    const article = require("./article")(sequelize);
     const articleList = require("../articleList/articleListDao");
     const url: string = apiURL + endPoint;
 
@@ -153,6 +153,9 @@ module.exports = (
      *        schema:
      *
      */
+
+    /* TODO:
+
     app.get(url, (req: Request, res: Response) => {
         if (req.header("query-type") == "byUser" && req.header("userID")) {
             articleList()
@@ -189,6 +192,8 @@ module.exports = (
                 });
         }
     });
+
+    */
 
     /**
      * @swagger
@@ -228,11 +233,9 @@ module.exports = (
      *          description: response from the server
      *
      */
-
     app.post(url, (req: Request, res: Response) => {
-        article
-            .createArticle(req)
-            .then((article: IArticle | undefined | { error: string }) => {
+        oldCreateArticle(req)
+            .then((article: IArticle | JSON) => {
                 if (article != undefined) {
                     res.status(200).json({
                         status: "article created",
@@ -277,27 +280,33 @@ module.exports = (
      *
      */
 
-    app.get(url, (req: Request, res: Response) => {
-        res.status(501).json({
-            "server-status": "articles are not implemented yet",
-        });
+    app.get(url, async (req: Request, res: Response) => {
+        const articles = await getArticles();
+
+        if (articles) {
+            res.status(200).json(articles);
+        } else {
+            res.status(404).json({
+                error: `Could not get articles`,
+            });
+        }
     });
 
     /**
      * @swagger
-     * /article/{articleID}:
+     * /articles/{articleID}:
      *   get:
-     *     description: fetch info about one specific article by id
+     *     description: fetch info about a specific article by id
      *     tags:
      *      - article
      *     parameters:
      *       - in: path
-     *         name: articleID
+     *         name: articleId
      *         required: true
      *         type: integer
      *         minimum: 1
      *       - in: header
-     *         name: user_id
+     *         name: userId
      *         type: string
      *     responses:
      *       200:
@@ -306,24 +315,22 @@ module.exports = (
      *              $ref: '#/definitions/getArticleResponse'
      *
      */
+    app.get(`${url}/:id`, async (req: Request, res: Response) => {
+        const articleId = parseInt(req.params.id);
 
-    app.get(`${url}/:id`, (req: Request, res: Response) => {
-        if (req.params.id) {
-            article
-                .getArticle(req.params.id, req.header("user_id"))
-                .then((article: IArticle | undefined) => {
-                    res.status(200).json({
-                        article,
-                    });
-                })
-                .catch((error: any) => {
-                    res.status(404).json({
-                        status: error.toString(),
-                    });
-                });
+        if (isNaN(articleId)) {
+            res.status(400).json({
+                error: `Bad request, ${articleId} is not a valid articleId`,
+            });
+        }
+
+        const article = await getArticle(parseInt(req.params.id));
+
+        if (article) {
+            res.status(200).json(article);
         } else {
             res.status(404).json({
-                status: "article not found",
+                error: `Could not find article with articleId ${articleId}`,
             });
         }
     });
@@ -331,7 +338,7 @@ module.exports = (
     /**
      * @swagger
      *
-     * /article/{articleID}:
+     * /articles/{articleID}:
      *      put:
      *       description: update article
      *       tags:
@@ -372,8 +379,10 @@ module.exports = (
      *
      */
 
+    /* TODO:
+
     app.put(`${url}/:id`, (req: Request, res: Response) => {
-        article
+        article2
             .updateArticle(req.params.id, req)
             .then((article: IArticle | undefined | { error: string }) => {
                 if (article != undefined) {
@@ -393,6 +402,8 @@ module.exports = (
                 });
             });
     });
+
+    */
 
     /**
      * @swagger

@@ -1,76 +1,67 @@
-// https://sequelize.org/v5/manual/
-import { Sequelize } from "sequelize";
+// https://sequelize.org/v7/manual/
+import { Sequelize } from "@sequelize/core";
+import { Article } from "./models/Article.model";
+import { File } from "./models/File.model";
+import { Grade } from "./models/Grade.model";
+import { Image } from "./models/Image.model";
+import { Subject } from "./models/Subject.model";
+import { Theme } from "./models/Theme.model";
+import { Tool } from "./models/Tool.model";
+import { User } from "./models/User.model";
+
 module.exports = () => {
     return {
         async setup(sequelize: Sequelize): Promise<void> {
             //models
-            const article = require("./models/articleModel")(sequelize);
-            const user = require("./models/userModel")(sequelize);
-            const fileModel = require("./models/fileModel")(sequelize);
-            const subject = require("./models/subjectModel")(sequelize);
-            const imageModel = require("./models/imageModel")(sequelize);
-            const toolModel = require("./models/toolModel")(sequelize);
-            const themeModel = require("./models/themeModel")(sequelize);
-            const gradeModel = require("./models/gradeLevelModel")(sequelize);
 
-            //associations
-            sequelize.model("article").hasMany(fileModel, {
-                sourceKey: "article_id",
-                foreignKey: "article_id",
-            });
-            sequelize.model("file").belongsTo(article, {
-                foreignKey: "article_id",
-            });
+            // Article 1:m
+            File.belongsTo(Article, { foreignKey: "articleId" });
+            Article.hasMany(File, { foreignKey: "articleId" });
 
-            sequelize.model("article").hasMany(imageModel, {
-                sourceKey: "article_id",
-                foreignKey: "article_id",
-            });
-            sequelize.model("image").belongsTo(article, {
-                foreignKey: "article_id",
-            });
+            Image.belongsTo(Article, { foreignKey: "articleId" });
+            Article.hasMany(Image, { foreignKey: "articleId" });
 
-            sequelize.model("user").hasMany(article, {
-                sourceKey: "user_id",
-                foreignKey: "author_id",
-            });
+            // User 1:m
+            Article.belongsTo(User, { foreignKey: "authorId" });
+            User.hasMany(Article, { foreignKey: "authorId" });
 
-            sequelize.model("article").belongsTo(user, {
-                foreignKey: "author_id",
-            });
-
-            // many to many Association
-            sequelize.model("article").belongsToMany(subject, {
-                through: "subject_in_article",
-            });
-            sequelize.model("subject").belongsToMany(article, {
-                through: "subject_in_article",
-            });
-
-            sequelize.model("article").belongsToMany(toolModel, {
-                through: "tool_in_article",
+            // Article Subject n:m
+            Article.belongsToMany(Subject, {
+                through: "SubjectArticle",
                 timestamps: false,
             });
-            sequelize.model("tool").belongsToMany(article, {
-                through: "tool_in_article",
+            Subject.belongsToMany(Article, {
+                through: "SubjectArticle",
                 timestamps: false,
             });
 
-            sequelize.model("article").belongsToMany(themeModel, {
-                through: "theme_in_article",
+            // Article Tool n:m
+            Article.belongsToMany(Tool, {
+                through: "ToolArticle",
                 timestamps: false,
             });
-            sequelize.model("theme").belongsToMany(article, {
-                through: "theme_in_article",
+            Tool.belongsToMany(Article, {
+                through: "ToolArticle",
                 timestamps: false,
             });
 
-            sequelize.model("article").belongsToMany(gradeModel, {
-                through: "grade_in_article",
+            // Article Theme n:m
+            Article.belongsToMany(Theme, {
+                through: "ThemeArticle",
                 timestamps: false,
             });
-            sequelize.model("grade_level").belongsToMany(article, {
-                through: "grade_in_article",
+            Theme.belongsToMany(Article, {
+                through: "ThemeArticle",
+                timestamps: false,
+            });
+
+            // Article Grade n:m
+            Article.belongsToMany(Grade, {
+                through: "GradeArticle",
+                timestamps: false,
+            });
+            Grade.belongsToMany(Article, {
+                through: "GradeArticle",
                 timestamps: false,
             });
 
@@ -79,89 +70,101 @@ module.exports = () => {
                 .sync({ force: process.env.DATABASE_FORCE_UPDATE == "true" })
                 .then(async () => {
                     if (process.env.SERVER_TEST_DATA == "true") {
-                        console.log("adding mock data to database");
+                        console.info("Adding mock data to the database");
                         const dataUser = require("./mock/userMock.json");
                         for (let userNumber in dataUser) {
-                            await user
-                                .create(dataUser[userNumber])
-                                .catch((error: any) => console.error(error));
+                            await User.create(dataUser[userNumber]).catch(
+                                (error: any) => console.error(error)
+                            );
                         }
 
+                        console.info("Adding Article data");
                         const articleData = require("./mock/articleMock.json");
                         for (let articleNumber in articleData) {
-                            await article
-                                .create(articleData[articleNumber])
-                                .catch((error: any) => console.error(error));
+                            await Article.create(
+                                articleData[articleNumber]
+                            ).catch((error: any) => console.error(error));
                         }
+
+                        console.info("Adding Subject data");
                         const subjectData = require("./mock/subjectMock.json");
                         for (let subjectNumber in subjectData) {
-                            await subject
-                                .create(subjectData[subjectNumber])
-                                .catch((error: any) => console.error(error));
+                            await Subject.create(
+                                subjectData[subjectNumber]
+                            ).catch((error: any) => console.error(error));
                         }
 
-                        const subject_article_Data = require("./mock/subject_in_articlesMock.json");
-                        for (let subjectNumber in subject_article_Data) {
+                        console.info("Adding SubjectArticle data");
+                        const subjectArticleData = require("./mock/subjectArticleMock.json");
+                        for (let subjectNumber in subjectArticleData) {
                             await sequelize
-                                .model("subject_in_article")
-                                .create(subject_article_Data[subjectNumber])
+                                .model("SubjectArticle")
+                                .create(subjectArticleData[subjectNumber])
                                 .catch((error: any) => console.error(error));
                         }
 
+                        console.info("Adding File data");
                         const fileData = require("./mock/fileMock.json");
                         for (let fileNumber in fileData) {
-                            await fileModel
-                                .create(fileData[fileNumber])
-                                .catch((error: any) => console.error(error));
+                            await File.create(fileData[fileNumber]).catch(
+                                (error: any) => console.error(error)
+                            );
                         }
 
+                        console.info("Adding Image data");
                         const imageData = require("./mock/imageMock.json");
                         for (let imageNumber in imageData) {
-                            await imageModel
-                                .create(imageData[imageNumber])
-                                .catch((error: any) => console.error(error));
+                            await Image.create(imageData[imageNumber]).catch(
+                                (error: any) => console.error(error)
+                            );
                         }
 
+                        console.info("Adding Tool data");
                         const toolData = require("./mock/toolMock.json");
                         for (let toolNumber in toolData) {
-                            await toolModel
-                                .create(toolData[toolNumber])
-                                .catch((error: any) => console.error(error));
+                            await Tool.create(toolData[toolNumber]).catch(
+                                (error: any) => console.error(error)
+                            );
                         }
 
-                        const tool_in_article = require("./mock/toolinArticleMock.json");
-                        for (let toolNumber in tool_in_article) {
+                        console.info("Adding ToolArticle data");
+                        const toolArticleData = require("./mock/toolArticleMock.json");
+                        for (let toolNumber in toolArticleData) {
                             await sequelize
-                                .model("tool_in_article")
-                                .create(tool_in_article[toolNumber])
+                                .model("ToolArticle")
+                                .create(toolArticleData[toolNumber])
                                 .catch((error: any) => console.error(error));
                         }
 
+                        console.info("Adding Grade data");
                         const gradeData = require("./mock/gradeMock.json");
                         for (let number in gradeData) {
-                            await gradeModel
-                                .create(gradeData[number])
-                                .catch((error: any) => console.error(error));
+                            await Grade.create(gradeData[number]).catch(
+                                (error: any) => console.error(error)
+                            );
                         }
 
-                        const gradeInArticleData = require("./mock/gradeInArticle.json");
-                        for (let number in gradeInArticleData) {
+                        console.info("Adding GradeArticle data");
+                        const gradeArticleData = require("./mock/gradeArticleMock.json");
+                        for (let number in gradeArticleData) {
                             await sequelize
-                                .model("grade_in_article")
-                                .create(gradeInArticleData[number])
+                                .model("GradeArticle")
+                                .create(gradeArticleData[number])
                                 .catch((error: any) => console.error(error));
                         }
+                        console.info("Adding Theme data");
                         const themeData = require("./mock/themeMock.json");
                         for (let number in themeData) {
-                            await themeModel
-                                .create(themeData[number])
-                                .catch((error: any) => console.error(error));
+                            await Theme.create(themeData[number]).catch(
+                                (error: any) => console.error(error)
+                            );
                         }
-                        const themeInArticleData = require("./mock/themeInArticle.json");
-                        for (let number in themeInArticleData) {
+                        console.info("Adding ThemeArticle");
+                        const themeArticleData = require("./mock/themeArticleMock.json");
+                        for (let number in themeArticleData) {
                             await sequelize
-                                .model("theme_in_article")
-                                .create(themeInArticleData[number])
+                                .model("ThemeArticle")
+                                .create(themeArticleData[number])
                                 .catch((error: any) => console.error(error));
                         }
                     }

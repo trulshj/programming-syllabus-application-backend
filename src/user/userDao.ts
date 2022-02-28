@@ -1,5 +1,6 @@
-import { Sequelize, Op } from "sequelize";
+import { Sequelize, Op } from "@sequelize/core";
 import { pbkdf2, randomBytes } from "crypto";
+import { User } from "../database/models/User.model";
 import { IUser } from "./IUser";
 
 // 32 byte converted to hex is 32*2 => 64
@@ -11,8 +12,49 @@ async function getRandomString(): Promise<string> {
     });
 }
 
-module.exports = (sequelize: Sequelize) => {
-    return {
+export async function getUser(userId: string) {
+    return User.findByPk(userId);
+}
+
+export async function updateUser(user: IUser) {
+    const salt: any = await getRandomString();
+    return await new Promise<{ success: boolean; message: string }>(
+        (resolve, reject) => {
+            pbkdf2(
+                user.password as string,
+                salt,
+                100,
+                32,
+                "sha256",
+                async (error, derivedKey) => {
+                    if (error) {
+                        reject({ success: false, message: error.message });
+                    }
+
+                    const [numberOfRows, updatedUser] = await User.update(
+                        {
+                            username: user.username,
+                            email: user.email,
+                            password: derivedKey.toString("hex"),
+                            salt: salt,
+                        },
+                        {
+                            where: {
+                                id: user.id,
+                            },
+                        }
+                    );
+
+                    resolve({
+                        success: true,
+                        message: `User ${updatedUser[0].username} successfully updated`,
+                    });
+                }
+            );
+        }
+    );
+}
+/*
         createUser(newUser: IUser) {
             return <Promise<undefined | string>>new Promise(async (res) => {
                 const { randomBytes, pbkdf2 } = await import("crypto");
@@ -103,7 +145,7 @@ module.exports = (sequelize: Sequelize) => {
                                 },
                                 {
                                     where: {
-                                        user_id: user.user_id,
+                                        user_id: user.id,
                                     },
                                 }
                             )
@@ -118,3 +160,4 @@ module.exports = (sequelize: Sequelize) => {
         },
     };
 };
+*/

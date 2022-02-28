@@ -48,15 +48,9 @@
  */
 
 import { Application, Request, Response } from "express";
-import { Sequelize } from "sequelize";
+import { getUser, updateUser } from "./userDao";
 
-module.exports = (
-    app: Application,
-    apiURL: string,
-    endPoint: string,
-    sequelize: Sequelize
-) => {
-    const user = require("./userDao")(sequelize);
+module.exports = (app: Application, apiURL: string, endPoint: string) => {
     const url: string = apiURL + endPoint;
     /**
      * @swagger
@@ -116,6 +110,7 @@ module.exports = (
 
     // create account
 
+    /* TODO:
     app.post(url, (req: Request, res: Response) => {
         if (req.body.username && req.body.email && req.body.password) {
             user.createUser(req.body).then((user: string | undefined) => {
@@ -135,6 +130,8 @@ module.exports = (
             });
         }
     });
+
+    */
 
     /**
      * @swagger
@@ -163,17 +160,43 @@ module.exports = (
      *          description: note response not decided yet
      */
 
-    app.put(url, (req: Request, res: Response) => {
-        user.updateUser(req.body)
-            .then((status: string) => {
-                res.status(200).json({
-                    status: status,
-                });
-            })
-            .catch((err: any) => {
-                res.status(401).json({
-                    status: err.toString(),
-                });
+    app.put(url, async (req: Request, res: Response) => {
+        const result = await updateUser(req.body);
+        if (result.success) {
+            res.status(200).json({ status: result.message });
+        } else {
+            res.status(500).json({ staus: result.message });
+        }
+    });
+
+    app.get(`${url}/:id`, async (req: Request, res: Response) => {
+        if (!req.params.id) {
+            res.status(400).json({ error: "Bad request, invalid userId" });
+        }
+
+        const user = await getUser(req.params.id);
+
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ error: "Could not find user" });
+        }
+    });
+
+    app.get(`${url}/:id/articles`, async (req: Request, res: Response) => {
+        if (!req.params.id) {
+            res.status(400).json({ error: "Bad request, invalid userId" });
+        }
+
+        const user = await getUser(req.params.id);
+        const userArticles = await user?.getArticles();
+
+        if (userArticles) {
+            res.status(200).json(userArticles);
+        } else {
+            res.status(404).json({
+                error: "Could not retrieve articles for user",
             });
+        }
     });
 };

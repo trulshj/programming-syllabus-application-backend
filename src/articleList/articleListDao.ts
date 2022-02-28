@@ -1,18 +1,23 @@
-import { Sequelize, Op, FindOptions } from "sequelize";
+import { Sequelize, Op, FindOptions } from "@sequelize/core";
+import { Article } from "../database/models/Article.model";
+import { Image } from "../database/models/Image.model";
+import { User } from "../database/models/User.model";
 
 const userFeatures = require("../user/userFeatures");
 const returnAttributes: string[] = [
-    "article_id",
-    "article_title",
-    "article_description",
-    "article_change_date",
+    "id",
+    "title",
+    "description",
+    "updatedDate",
     "published",
 ];
 
-function fetchData(options: FindOptions, sequelize: Sequelize): Promise<any> {
+async function fetchData(options: FindOptions): Promise<any> {
+    return await Article.findAll(options);
+    /*
     return new Promise((res: any, error: any) => {
         sequelize
-            .model("article")
+            .model("Article")
             .findAll(options)
             .then((articleList: any) => {
                 let output: JSON[] = [];
@@ -30,6 +35,7 @@ function fetchData(options: FindOptions, sequelize: Sequelize): Promise<any> {
                 error(err);
             });
     });
+    */
 }
 
 module.exports = () => {
@@ -39,18 +45,18 @@ module.exports = () => {
                 let getList: FindOptions = {
                     attributes: returnAttributes,
                     where: {
-                        author_id: userID,
+                        authorId: userID,
                     },
                     include: [
                         {
-                            attributes: ["file_id", "alt_text"],
+                            attributes: ["fileId", "altText"],
                             model: sequelize.model("image"),
                             required: false,
                             limit: 1,
                         },
                     ],
                 };
-                fetchData(getList, sequelize).then((aList) => res(aList));
+                fetchData(getList).then((aList) => res(aList));
             });
         },
         getArticleList: (sequelize: Sequelize, userID: string) => {
@@ -64,14 +70,14 @@ module.exports = () => {
                     },
                     include: [
                         {
-                            attributes: ["file_id", "alt_text"],
+                            attributes: ["fileId", "altText"],
                             model: sequelize.model("image"),
                             required: false,
                             limit: 1,
                         },
                     ],
                 };
-                fetchData(getList, sequelize).then((aList) => res(aList));
+                fetchData(getList).then((aList) => res(aList));
             });
         },
         searchArticleList: (sequelize: Sequelize, search: string) => {
@@ -87,10 +93,10 @@ module.exports = () => {
                         published: true,
                         [Op.and]: {
                             [Op.or]: {
-                                article_description: {
+                                description: {
                                     [Op.like]: "%" + search + "%",
                                 },
-                                article_title: {
+                                title: {
                                     [Op.like]: "%" + search + "%",
                                 },
                             },
@@ -98,7 +104,7 @@ module.exports = () => {
                     },
                     include: [
                         {
-                            attributes: ["file_id", "alt_text"],
+                            attributes: ["fileId", "altText"],
                             model: sequelize.model("image"),
                             required: false,
                             limit: 1,
@@ -106,7 +112,7 @@ module.exports = () => {
                     ],
                 };
 
-                fetchData(searchList, sequelize).then((aList) => res(aList));
+                fetchData(searchList).then((aList) => res(aList));
             });
         },
     };
