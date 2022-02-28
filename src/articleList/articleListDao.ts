@@ -1,4 +1,7 @@
 import { Sequelize, Op, FindOptions } from "@sequelize/core";
+import { Article } from "../database/models/Article.model";
+import { Image } from "../database/models/Image.model";
+import { User } from "../database/models/User.model";
 
 const userFeatures = require("../user/userFeatures");
 const returnAttributes: string[] = [
@@ -9,7 +12,9 @@ const returnAttributes: string[] = [
     "published",
 ];
 
-function fetchData(options: FindOptions, sequelize: Sequelize): Promise<any> {
+async function fetchData(options: FindOptions): Promise<any> {
+    return await Article.findAll(options);
+    /*
     return new Promise((res: any, error: any) => {
         sequelize
             .model("Article")
@@ -30,6 +35,7 @@ function fetchData(options: FindOptions, sequelize: Sequelize): Promise<any> {
                 error(err);
             });
     });
+    */
 }
 
 module.exports = () => {
@@ -50,7 +56,7 @@ module.exports = () => {
                         },
                     ],
                 };
-                fetchData(getList, sequelize).then((aList) => res(aList));
+                fetchData(getList).then((aList) => res(aList));
             });
         },
         getArticleList: (sequelize: Sequelize, userID: string) => {
@@ -71,7 +77,7 @@ module.exports = () => {
                         },
                     ],
                 };
-                fetchData(getList, sequelize).then((aList) => res(aList));
+                fetchData(getList).then((aList) => res(aList));
             });
         },
         searchArticleList: (sequelize: Sequelize, search: string) => {
@@ -106,7 +112,7 @@ module.exports = () => {
                     ],
                 };
 
-                fetchData(searchList, sequelize).then((aList) => res(aList));
+                fetchData(searchList).then((aList) => res(aList));
             });
         },
     };

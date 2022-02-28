@@ -104,9 +104,6 @@ export async function createArticle(article: IArticle) {
         authorId: article.authorId,
     });
 
-    const form = formidable({ multiples: true, uploadDir: "./artifacts" });
-    form.parse(article);
-
     for (let file of article.files) {
         File.create({ articleId: created.id, name: file.name, id: file.id });
     }
@@ -144,176 +141,122 @@ export async function createArticle(article: IArticle) {
     }
 }
 
-/*
-        createArticle: (req: IArticle) => {
-            return <Promise<JSON | IArticle>>(
-                new Promise((res: any, error: any) => {
-                    try {
-                        let article: IArticle;
-                        // max filesize 1G
-                        const form = formidable({
-                            multiples: true,
-                            maxFileSize: 1000000000,
-                            uploadDir: "./artifacts",
-                        });
+export function oldCreateArticle(req: any) {
+    return <Promise<JSON | IArticle>>new Promise((res: any, error: any) => {
+        try {
+            let article: IArticle;
+            // max filesize 1G
+            const form = formidable({
+                multiples: true,
+                maxFileSize: 1000000000,
+                uploadDir: "./artifacts",
+            });
 
-                        form.parse(
-                            req,
-                            async (err: any, fields: any, files: any) => {
-                                if (err) {
-                                    console.error(err);
-                                    return;
-                                }
-                                article = JSON.parse(fields.body);
-                                //article data from json
-                                await sequelize
-                                    .model("Article")
-                                    .create({
-                                        title: article.title,
-                                        description: article.description,
-                                        timeToComplete: article.timeToComplete,
-                                        authorId: article.authorId,
-                                    })
-                                    .then((articeCreated: any) => {
-                                        if (articeCreated.id) {
-                                            // file data from forms
-                                            if (article.files != undefined) {
-                                                article.files.map(
-                                                    async (oneFile: any) => {
-                                                        let fomrsFile: any = "";
-                                                        if (
-                                                            Array.isArray(
-                                                                files.file
-                                                            )
-                                                        ) {
-                                                            const tempFile: any =
-                                                                files.file.find(
-                                                                    (input: {
-                                                                        name: string;
-                                                                    }) => {
-                                                                        return (
-                                                                            input.name ===
-                                                                            oneFile.file_name
-                                                                        );
-                                                                    }
-                                                                );
-                                                            fomrsFile =
-                                                                tempFile;
-                                                        } else {
-                                                            fomrsFile =
-                                                                files.file;
-                                                        }
-                                                        await sequelize
-                                                            .model("File")
-                                                            .create({
-                                                                ArticleId:
-                                                                    articeCreated.id,
-                                                                file_name:
-                                                                    oneFile.file_name,
-                                                                fileId: fomrsFile.path.split(
-                                                                    "/"
-                                                                )[1],
-                                                            });
-                                                    }
+            form.parse(req, async (err: any, fields: any, files: any) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                article = JSON.parse(fields.body);
+                //article data from json
+
+                await sequelize
+                    .model("Article")
+                    .create({
+                        title: article.title,
+                        description: article.description,
+                        timeToComplete: article.timeToComplete,
+                        authorId: article.authorId,
+                    })
+                    .then((createdArticle: any) => {
+                        if (createdArticle.id) {
+                            // file data from forms
+                            if (article.files != undefined) {
+                                article.files.map(async (oneFile: any) => {
+                                    let fomrsFile: any = "";
+                                    if (Array.isArray(files.file)) {
+                                        const tempFile: any = files.file.find(
+                                            (input: { name: string }) => {
+                                                return (
+                                                    input.name ===
+                                                    oneFile.file_name
                                                 );
                                             }
-
-                                            if (article.images != undefined) {
-                                                // image data from forms
-                                                article.images.map(
-                                                    async (oneImage) => {
-                                                        let fomrsFile: any = "";
-                                                        if (
-                                                            Array.isArray(
-                                                                files.file
-                                                            )
-                                                        ) {
-                                                            const tempFile: any =
-                                                                files.file.find(
-                                                                    (input: {
-                                                                        name: string;
-                                                                    }) => {
-                                                                        return (
-                                                                            input.name ===
-                                                                            oneImage.file_name
-                                                                        );
-                                                                    }
-                                                                );
-                                                            fomrsFile =
-                                                                tempFile;
-                                                        } else {
-                                                            fomrsFile =
-                                                                files.file;
-                                                        }
-                                                        await sequelize
-                                                            .model("Image")
-                                                            .create({
-                                                                ArticleId:
-                                                                    articeCreated.id,
-                                                                altText:
-                                                                    oneImage.altText,
-                                                                fileId: fomrsFile.path.split(
-                                                                    "/"
-                                                                )[1],
-                                                            });
-                                                    }
-                                                );
-                                            }
-
-                                            if (article.grades != undefined) {
-                                                article.grades.map(
-                                                    async (oneGrade) => {
-                                                        await sequelize
-                                                            .model(
-                                                                "GradeArticle"
-                                                            )
-                                                            .create({
-                                                                articleArticleId:
-                                                                    articeCreated.id,
-                                                                gradeLevelId:
-                                                                    oneGrade.id,
-                                                            });
-                                                    }
-                                                );
-                                            }
-
-                                            if (article.tools != undefined) {
-                                                article.tools.map(
-                                                    async (oneTool) => {
-                                                        await sequelize
-                                                            .model(
-                                                                "ToolArticle"
-                                                            )
-                                                            .create({
-                                                                ArticleId:
-                                                                    articeCreated.id,
-                                                                tool_id:
-                                                                    oneTool.id,
-                                                            });
-                                                    }
-                                                );
-                                            }
-                                        }
-                                        res(articeCreated);
-                                    })
-                                    .catch((er: any) => {
-                                        console.error(er);
-                                        error("cant create article");
+                                        );
+                                        fomrsFile = tempFile;
+                                    } else {
+                                        fomrsFile = files.file;
+                                    }
+                                    await sequelize.model("File").create({
+                                        ArticleId: createdArticle.id,
+                                        file_name: oneFile.file_name,
+                                        fileId: fomrsFile.path.split("/")[1],
                                     });
+                                });
                             }
-                        );
-                    } catch (err: any) {
-                        console.log(
-                            "error: ",
-                            err ? err : " error not spesified"
-                        );
-                        res(undefined);
-                    }
-                })
-            );
-        },
 
-        /*
+                            if (article.images != undefined) {
+                                // image data from forms
+                                article.images.map(async (oneImage) => {
+                                    let fomrsFile: any = "";
+                                    if (Array.isArray(files.file)) {
+                                        const tempFile: any = files.file.find(
+                                            (input: { name: string }) => {
+                                                return (
+                                                    input.name ===
+                                                    oneImage.fileId
+                                                );
+                                            }
+                                        );
+                                        fomrsFile = tempFile;
+                                    } else {
+                                        fomrsFile = files.file;
+                                    }
+                                    await sequelize.model("Image").create({
+                                        ArticleId: createdArticle.id,
+                                        altText: oneImage.altText,
+                                        fileId: fomrsFile.path.split("/")[1],
+                                    });
+                                });
+                            }
+
+                            if (article.grades != undefined) {
+                                article.grades.map(async (oneGrade) => {
+                                    await sequelize
+                                        .model("GradeArticle")
+                                        .create({
+                                            articleArticleId: createdArticle.id,
+                                            gradeLevelId: oneGrade.id,
+                                        });
+                                });
+                            }
+
+                            if (article.tools != undefined) {
+                                article.tools.map(async (oneTool) => {
+                                    await sequelize
+                                        .model("ToolArticle")
+                                        .create({
+                                            ArticleId: createdArticle.id,
+                                            tool_id: oneTool.id,
+                                        });
+                                });
+                            }
+                        }
+                        res(createdArticle);
+                    })
+                    .catch((er: any) => {
+                        console.error(er);
+                        error("cant create article");
+                    });
+            });
+        } catch (err: any) {
+            console.log("error: ", err ? err : " error not spesified");
+            res(undefined);
+        }
+    });
+}
+
+/*
         updateArticle: (articleId: number, req: IArticle) => {
             return <Promise<undefined | JSON>>(
                 new Promise((res: any, error: any) => {
@@ -500,3 +443,40 @@ export async function createArticle(article: IArticle) {
     };
 };
 */
+
+export async function getUserArticles(userId: string) {
+    const user = await User.findByPk(userId);
+    return await user?.getArticles({ include: Image, limit: 1 });
+}
+
+export async function getArticles() {
+    return await Article.findAll({
+        include: [
+            {
+                model: Image,
+                attributes: ["fileId", "altText"],
+                limit: 1,
+            },
+            {
+                model: Subject,
+                through: { attributes: [] },
+                attributes: ["id", "name"],
+            },
+            {
+                model: Theme,
+                through: { attributes: [] },
+                attributes: ["id", "name"],
+            },
+            {
+                model: Grade,
+                through: { attributes: [] },
+                attributes: ["id", "name"],
+            },
+            {
+                model: Tool,
+                through: { attributes: [] },
+                attributes: ["id", "name"],
+            },
+        ],
+    });
+}

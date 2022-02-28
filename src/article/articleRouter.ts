@@ -1,6 +1,6 @@
 import { Application, Request, Response } from "express";
 import { Sequelize } from "@sequelize/core";
-import { getArticle } from "./article";
+import { getArticle, getArticles, oldCreateArticle } from "./article";
 import { IArticle } from "./IArticle";
 
 /**
@@ -233,12 +233,9 @@ module.exports = (
      *          description: response from the server
      *
      */
-
-    /* TODO:
     app.post(url, (req: Request, res: Response) => {
-        article2
-            .createArticle(req)
-            .then((article: IArticle | undefined | { error: string }) => {
+        oldCreateArticle(req)
+            .then((article: IArticle | JSON) => {
                 if (article != undefined) {
                     res.status(200).json({
                         status: "article created",
@@ -256,8 +253,6 @@ module.exports = (
                 });
             });
     });
-
-    */
 
     /**
      * @swagger
@@ -285,28 +280,33 @@ module.exports = (
      *
      */
 
-    // FIXME:
-    app.get(url, (req: Request, res: Response) => {
-        res.status(501).json({
-            "server-status": "articles are not implemented yet",
-        });
+    app.get(url, async (req: Request, res: Response) => {
+        const articles = await getArticles();
+
+        if (articles) {
+            res.status(200).json(articles);
+        } else {
+            res.status(404).json({
+                error: `Could not get articles`,
+            });
+        }
     });
 
     /**
      * @swagger
      * /articles/{articleID}:
      *   get:
-     *     description: fetch info about one specific article by id
+     *     description: fetch info about a specific article by id
      *     tags:
      *      - article
      *     parameters:
      *       - in: path
-     *         name: articleID
+     *         name: articleId
      *         required: true
      *         type: integer
      *         minimum: 1
      *       - in: header
-     *         name: user_id
+     *         name: userId
      *         type: string
      *     responses:
      *       200:
@@ -338,7 +338,7 @@ module.exports = (
     /**
      * @swagger
      *
-     * /article/{articleID}:
+     * /articles/{articleID}:
      *      put:
      *       description: update article
      *       tags:
