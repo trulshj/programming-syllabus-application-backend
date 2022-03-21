@@ -26,13 +26,12 @@ const https = require("https");
 const ssl = {
     key: fs.readFileSync("./certificate/key.pem"),
     cert: fs.readFileSync("./certificate/cert.pem"),
-    port: port,
 };
-https.createServer(ssl, app).listen(port, () => {
-    console.log("Backend started");
-    console.log("API Doc: https://localhost:" + port + swaggerEndPoint);
-    console.log("API URL: https://localhost:" + baseAPI);
-});
+const httpsServer = https.createServer(ssl, app);
+httpsServer.listen(port);
+
+console.log("API Doc: https://localhost:" + port + swaggerEndPoint);
+console.log("API URL: https://localhost:" + baseAPI);
 
 // Create instance of sequelize database connection
 export const sequelize = initSequelize();
