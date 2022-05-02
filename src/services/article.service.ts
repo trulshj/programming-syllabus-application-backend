@@ -5,7 +5,7 @@ import { User } from "../database/models/User.model";
 import { FileDto } from "../types/FileDto";
 import { TagDto } from "../types/TagDto";
 
-import tagService = require("./tags.service");
+import tagService = require("./tag.service");
 
 const includeArray = [
     {

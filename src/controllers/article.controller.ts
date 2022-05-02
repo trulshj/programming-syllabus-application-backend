@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import formidable = require("formidable");
 
 import articleService = require("../services/article.service");
 

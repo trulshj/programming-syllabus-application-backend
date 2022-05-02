@@ -6,7 +6,13 @@ function tagArticle() {
     return sequelizeInstance.model("TagArticle");
 }
 
-export async function getAll() {}
+export async function getAll() {
+    return new Promise<Tag[]>(async (res, error) => {
+        const tags = await Tag.findAll();
+        res(tags);
+    });
+}
+
 export async function get() {}
 export async function create(tagType: number, name: string) {
     return new Promise<Tag>(async (res, error) => {
