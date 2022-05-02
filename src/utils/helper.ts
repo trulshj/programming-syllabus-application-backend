@@ -1,4 +1,5 @@
 import { Sequelize } from "@sequelize/core";
+import { randomBytes } from "crypto";
 
 export function initSequelize() {
     return new Sequelize(
@@ -11,4 +12,8 @@ export function initSequelize() {
             logging: process.env.QUERY_LOG == "true",
         }
     );
+}
+
+export function getRandomString(): string {
+    return randomBytes(32).toString("hex");
 }

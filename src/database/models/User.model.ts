@@ -18,7 +18,10 @@ import {
     NonAttribute,
 } from "@sequelize/core";
 import { Article } from "./Article.model";
-import { sequelize } from "../../app";
+import { sequelizeInstance } from "../../app";
+import { pbkdf2Sync } from "crypto";
+import { UserDto } from "../../types/UserDto";
+import { getRandomString } from "../../utils/helper";
 
 export class User extends Model<
     InferAttributes<User>,
@@ -28,7 +31,7 @@ export class User extends Model<
     declare username: string;
     declare email: string;
     declare password: string;
-    declare salt: string;
+    declare salt: CreationOptional<string>;
     declare roleId: number;
     declare verified: boolean;
 
@@ -49,6 +52,36 @@ export class User extends Model<
     declare articles?: NonAttribute<Article[]>;
 
     declare static associations: { articles: Association<User, Article> };
+
+    comparePassword(comparisonPassword: string): boolean {
+        if (!this.salt) {
+            return this.password == comparisonPassword;
+        }
+
+        const hash = pbkdf2Sync(
+            comparisonPassword,
+            this.salt,
+            100,
+            32,
+            "sha256"
+        ).toString("hex");
+
+        return hash == this.password;
+    }
+
+    getDto(): UserDto {
+        return {
+            id: this.id,
+            username: this.username,
+            email: this.email,
+            roleId: this.roleId,
+            verified: this.verified,
+        };
+    }
+
+    isAdmin(): boolean {
+        return this.roleId == 1;
+    }
 }
 
 User.init(
@@ -68,6 +101,19 @@ User.init(
         },
         password: {
             type: DataTypes.STRING(64),
+            set(newPassword: string) {
+                const newSalt = getRandomString();
+                const hash = pbkdf2Sync(
+                    newPassword,
+                    newSalt,
+                    100,
+                    32,
+                    "sha256"
+                ).toString("hex");
+
+                this.setDataValue("salt", newSalt);
+                this.setDataValue("password", hash);
+            },
         },
         salt: {
             type: DataTypes.STRING(64),
@@ -84,7 +130,7 @@ User.init(
         updatedAt: DataTypes.DATE,
     },
     {
-        sequelize,
+        sequelize: sequelizeInstance,
         tableName: "Users",
     }
 );

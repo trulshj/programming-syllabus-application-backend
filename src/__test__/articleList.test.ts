@@ -1,5 +1,5 @@
 import DoneCallback = jest.DoneCallback;
-import { initSequelize } from "../lib/helper";
+import { initSequelize } from "../utils/helper";
 
 jest.setTimeout(50000);
 
