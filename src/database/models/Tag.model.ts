@@ -5,20 +5,21 @@ import {
     InferCreationAttributes,
     Model,
 } from "@sequelize/core";
-import { sequelize } from "../../app";
+import { sequelizeInstance } from "../../app";
 
-export class Subject extends Model<
-    InferAttributes<Subject>,
-    InferCreationAttributes<Subject>
+export class Tag extends Model<
+    InferAttributes<Tag>,
+    InferCreationAttributes<Tag>
 > {
     declare id: CreationOptional<number>;
     declare name: string;
+    declare tagType: number;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
 }
 
-Subject.init(
+Tag.init(
     {
         id: {
             type: DataTypes.INTEGER.UNSIGNED,
@@ -29,8 +30,12 @@ Subject.init(
             type: DataTypes.STRING(128),
             allowNull: false,
         },
+        tagType: {
+            type: DataTypes.STRING(8),
+            allowNull: false,
+        },
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
     },
-    { sequelize, tableName: "Subjects" }
+    { sequelize: sequelizeInstance, tableName: "Tags" }
 );

@@ -17,9 +17,8 @@ import {
     Model,
     NonAttribute,
 } from "@sequelize/core";
-import { sequelize } from "../../app";
+import { sequelizeInstance } from "../../app";
 import { File } from "./File.model";
-import { Image } from "./Image.model";
 import { User } from "./User.model";
 
 export class Article extends Model<
@@ -50,20 +49,8 @@ export class Article extends Model<
     declare countFiles: HasManyCountAssociationsMixin;
     declare createFile: HasManyCreateAssociationMixin<File, "articleId">;
 
-    declare getImages: HasManyGetAssociationsMixin<Image>;
-    declare addImage: HasManyAddAssociationMixin<Image, string>;
-    declare addImages: HasManyAddAssociationsMixin<Image, string>;
-    declare setImages: HasManySetAssociationsMixin<Image, string>;
-    declare removeImage: HasManyRemoveAssociationMixin<Image, string>;
-    declare removeImages: HasManyRemoveAssociationsMixin<Image, string>;
-    declare hasImage: HasManyHasAssociationMixin<Image, string>;
-    declare hasImages: HasManyHasAssociationsMixin<Image, string>;
-    declare countImages: HasManyCountAssociationsMixin;
-    declare createImage: HasManyCreateAssociationMixin<Image, "articleId">;
-
     declare static associations: {
         files: Association<Article, File>;
-        images: Association<Article, Image>;
     };
 }
 
@@ -101,5 +88,5 @@ Article.init(
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
     },
-    { sequelize, tableName: "Articles" }
+    { sequelize: sequelizeInstance, tableName: "Articles" }
 );

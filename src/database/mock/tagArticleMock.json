@@ -1,0 +1,84 @@
+{
+    "tagArticles": [
+        {
+            "ArticleId": 1,
+            "TagId": 1
+        },
+        {
+            "ArticleId": 1,
+            "TagId": 14
+        },
+        {
+            "ArticleId": 1,
+            "TagId": 16
+        },
+        {
+            "ArticleId": 1,
+            "TagId": 18
+        },
+        {
+            "ArticleId": 2,
+            "TagId": 1
+        },
+        {
+            "ArticleId": 2,
+            "TagId": 14
+        },
+        {
+            "ArticleId": 2,
+            "TagId": 16
+        },
+        {
+            "ArticleId": 2,
+            "TagId": 18
+        },
+        {
+            "ArticleId": 3,
+            "TagId": 1
+        },
+        {
+            "ArticleId": 3,
+            "TagId": 14
+        },
+        {
+            "ArticleId": 3,
+            "TagId": 16
+        },
+        {
+            "ArticleId": 3,
+            "TagId": 18
+        },
+        {
+            "ArticleId": 4,
+            "TagId": 1
+        },
+        {
+            "ArticleId": 4,
+            "TagId": 14
+        },
+        {
+            "ArticleId": 4,
+            "TagId": 16
+        },
+        {
+            "ArticleId": 4,
+            "TagId": 18
+        },
+        {
+            "ArticleId": 5,
+            "TagId": 1
+        },
+        {
+            "ArticleId": 5,
+            "TagId": 14
+        },
+        {
+            "ArticleId": 5,
+            "TagId": 16
+        },
+        {
+            "ArticleId": 5,
+            "TagId": 18
+        }
+    ]
+}

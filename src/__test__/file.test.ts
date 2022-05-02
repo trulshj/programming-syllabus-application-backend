@@ -1,9 +1,9 @@
 import DoneCallback = jest.DoneCallback;
-import { initSequelize } from "../lib/helper";
+import { initSequelize } from "../utils/helper";
 
 const fs = require("fs");
 const artifactPath: string = "./outdir/artifacts/";
-const fileSha: string =
+const hash: string =
     "ecdc5536f73bdae8816f0ea40726ef5e9b810d914493075903bb90623d97b1d8";
 const imageSha: string =
     "ffff5536f73bdae8816f0ea40726ef5e9b810d914493075903bb90623d97b1d8";
@@ -19,7 +19,7 @@ beforeAll(async (done: DoneCallback) => {
             .setup(sequelize)
             .then(async () => {
                 await fs.mkdir(artifactPath, () => {
-                    fs.writeFile(artifactPath + fileSha, "a test file", () => {
+                    fs.writeFile(artifactPath + hash, "a test file", () => {
                         console.log("finished making file");
                         fs.writeFile(
                             artifactPath + imageSha,
@@ -38,7 +38,7 @@ beforeAll(async (done: DoneCallback) => {
 test("fetching artifacts(files) from backend", async (done) => {
     const file = require("./fileDao");
     file(artifactPath)
-        .getFile(sequelize.model("File"), sequelize.model("image"), fileSha)
+        .getFile(sequelize.model("File"), sequelize.model("image"), hash)
         .then((res: string[]) => {
             expect(res).toBeDefined();
             expect(res[1]).toBe("Fil nr 1.txt");

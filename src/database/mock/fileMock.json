@@ -1,42 +1,42 @@
 {
     "01": {
-        "id": "ecdc5536f73bdae8816f0ea40726ef5e9b810d914493075903bb90623d97b1d8",
-        "name": "Fil nr 1.txt",
+        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
+        "name": "Fil nr 1.png",
         "articleId": 1
     },
     "02": {
-        "id": "67ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr2.txt",
+        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
+        "name": "Filenr2.png",
         "articleId": 1
     },
     "03": {
-        "id": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.txt",
+        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
+        "name": "Filenr1.png",
         "articleId": 2
     },
     "04": {
-        "id": "97ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.txt",
+        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
+        "name": "Filenr1.png",
         "articleId": 2
     },
     "05": {
-        "id": "ecdc5536f73bdae8816f0ea40726ef5e9aaa0d914493075903bb90623d97b1d8",
-        "name": "Filenr1.txt",
+        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
+        "name": "Filenr1.png",
         "articleId": 5
     },
     "06": {
-        "id": "67ee5478eaadb034ba599aaeb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr2.txt",
+        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
+        "name": "Filenr2.png",
         "articleId": 5
     },
     "07": {
-        "id": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3aaa587f36ebcbeeb65f70e",
-        "name": "Filenr1.txt",
+        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
+        "name": "Filenr1.png",
         "articleId": 5
     },
     "08": {
-        "id": "97ee5478eaadb034ba59944eb977797b49ca6aass574587f36ebcbeeb65f70e",
-        "name": "Filenr1.txt",
+        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
+        "name": "Filenr1.png",
         "articleId": 6
     }
 }

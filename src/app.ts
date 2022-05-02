@@ -1,90 +1,114 @@
-import { Application, response } from "express";
-import { initSequelize } from "./lib/helper";
-const express = require("express");
-const app: Application = express();
-const port: number = 8080;
-const routes: any = require("./routerTopLevel");
-const swaggerJsdoc = require("swagger-jsdoc");
-const baseAPI: string = "/api";
-const swaggerEndPoint: string = "/api-docs/";
-const cors = require("cors");
-require("dotenv").config();
-const fs = require("fs");
-const bodyparser = require("body-parser");
-app.use(bodyparser.json({ limit: "1000mb" }));
-app.use(
-    bodyparser.urlencoded({
-        limit: "1000mb",
-        extended: true,
-        parameterLimit: "10000",
-    })
-);
-app.use(cors());
+/*
+    Set environment variables
+*/
+import "dotenv/config";
 
-//ssl-setup
-const https = require("https");
-const ssl = {
-    key: fs.readFileSync("./certificate/key.pem"),
-    cert: fs.readFileSync("./certificate/cert.pem"),
-};
-const httpsServer = https.createServer(ssl, app);
-httpsServer.listen(port);
-
-console.log("API Doc: https://localhost:" + port + swaggerEndPoint);
-console.log("API URL: https://localhost:" + baseAPI);
+/*
+    Sequelize setup
+*/
+import { initSequelize } from "./utils/helper";
 
 // Create instance of sequelize database connection
-export const sequelize = initSequelize();
+export const sequelizeInstance = initSequelize();
 
 // Connect to and setup the database
-sequelize
+sequelizeInstance
     .authenticate()
     .then(() => {
         const database = require("./database/database");
         database()
-            .setup(sequelize)
+            .setup(sequelizeInstance)
             .then(() => console.log("Database setup finised"));
     })
     .catch((err: any) => {
         console.error("Unable to connect to the database:", err);
     });
 
-// swagger js-dock
-// setup based on https://github.com/Surnet/swagger-jsdoc/blob/master/examples/app/app.js
+/*
+    Express App setup
+*/
+import { Application } from "express";
+import express = require("express");
+import cors = require("cors");
 
+const app: Application = express();
+
+app.use(express.json({ limit: "1000mb" }));
+app.use(
+    express.urlencoded({
+        limit: "1000mb",
+        extended: true,
+    })
+);
+app.use(cors());
+
+/*
+    Routing
+*/
+
+import users = require("./routes/users.router");
+import login = require("./routes/login.router");
+import articles = require("./routes/articles.router");
+import files = require("./routes/files.router");
+import tags = require("./routes/tags.router");
+
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`);
+    next();
+});
+
+app.use("/users", users.router);
+app.use("/login", login.router);
+app.use("/articles", articles.router);
+app.use("/files", files.router);
+app.use("/tags", tags.router);
+
+/*
+    ssl setup
+*/
+import fs = require("fs");
+import https = require("https");
+
+const ssl = {
+    key: fs.readFileSync("./certificate/key.pem"),
+    cert: fs.readFileSync("./certificate/cert.pem"),
+};
+const httpsServer = https.createServer(ssl, app);
+const port: number = 8080;
+
+httpsServer.listen(port);
+console.log("API URL: https://localhost:" + port);
+
+/*
+    Swagger setup
+    based on https://github.com/Surnet/swagger-jsdoc/blob/master/examples/app/app.js
+*/
+
+import swaggerJsdoc = require("swagger-jsdoc");
+import swaggerUi = require("swagger-ui-express");
+
+const swaggerEndPoint: string = "/api-docs/";
 const swaggerDefinition = {
     info: {
-        // API informations (required)
-        title: "Teaching Articles API", // Title (required),
+        title: "Teaching Articles API",
         swagger: "2.0",
-        version: "0.0.1", // Version (required)
+        version: "0.0.1",
         description:
-            "Backend API for fetching and creating articles about programming within different subjects", // Description (optional)
+            "Backend API for fetching and creating articles about programming within different subjects",
     },
     servers: [
         {
             url: "https://localhost:${port}",
         },
     ],
-    basePath: baseAPI, // Base path (optional)
 };
 
-// Options for swagger docs
-const options = {
-    // Import swaggerDefinitions
+const swaggerOptions = {
     swaggerDefinition,
-    // Path to the API docs
-    // Note that this path is relative to the current directory from which the Node.js is ran, not the application itself.
-    //Search every folder inside /src folder and read all ts(typescript files)
     apis: ["./src/*/*.ts", "./outdir/*/*.js"],
 };
 
-// Initialize swagger-jsdoc -> returns validated swagger spec in json format
-const swaggerSpec = swaggerJsdoc(options);
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
-// swagger server using swagger-ui-express
-const swaggerUi = require("swagger-ui-express");
 app.use(swaggerEndPoint, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-//router for the rest of the api-endpoints
-routes(app, baseAPI, sequelize);
+console.log("API Doc: https://localhost:" + port + swaggerEndPoint);

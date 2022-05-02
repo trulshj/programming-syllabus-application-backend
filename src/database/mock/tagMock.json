@@ -1,0 +1,80 @@
+{
+    "tags": [
+        {
+            "name": "1. klasse",
+            "tagType": "grade"
+        },
+        {
+            "name": "2. klasse",
+            "tagType": "grade"
+        },
+        {
+            "name": "3. klasse",
+            "tagType": "grade"
+        },
+        {
+            "name": "4. klasse",
+            "tagType": "grade"
+        },
+        {
+            "name": "5. klasse",
+            "tagType": "grade"
+        },
+        {
+            "name": "6. klasse",
+            "tagType": "grade"
+        },
+        {
+            "name": "7. klasse",
+            "tagType": "grade"
+        },
+        {
+            "name": "8. klasse",
+            "tagType": "grade"
+        },
+        {
+            "name": "9. klasse",
+            "tagType": "grade"
+        },
+        {
+            "name": "10. klasse",
+            "tagType": "grade"
+        },
+        {
+            "name": "1. VGS",
+            "tagType": "grade"
+        },
+        {
+            "name": "2. VGS",
+            "tagType": "grade"
+        },
+        {
+            "name": "3. VGS",
+            "tagType": "grade"
+        },
+        {
+            "name": "Bacheloroppgave Dataingeniør",
+            "tagType": "subject"
+        },
+        {
+            "name": "Systemtenkning med økonomi",
+            "tagType": "subject"
+        },
+        {
+            "name": "Dataspill",
+            "tagType": "theme"
+        },
+        {
+            "name": "Program",
+            "tagType": "theme"
+        },
+        {
+            "name": "Turtle",
+            "tagType": "tool"
+        },
+        {
+            "name": "Numpy",
+            "tagType": "tool"
+        }
+    ]
+}
