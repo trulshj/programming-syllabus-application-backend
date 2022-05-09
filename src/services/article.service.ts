@@ -110,20 +110,13 @@ export async function update(
     newFiles: FileDto[]
 ) {
     return new Promise<Article>(async (res, err) => {
-        const article = await Article.findByPk(articleId);
-
-        if (!article) {
-            err("Could not find article");
-            return;
-        }
-
-        if (newTitle) {
-            article.setDataValue("title", newTitle);
-        }
-
-        if (newDescription) {
-            article.setDataValue("title", newTitle);
-        }
+        await Article.update(
+            {
+                title: newTitle,
+                description: newDescription,
+            },
+            { where: { id: articleId } }
+        );
 
         if (newTags) {
             await tagService.clearArticleTags(articleId);
@@ -131,16 +124,24 @@ export async function update(
         }
 
         if (newFiles) {
-            await File.destroy({ where: { articleId: article.id } });
+            await File.destroy({ where: { articleId: articleId } });
             for (let file of newFiles) {
                 await File.create({
-                    articleId: article.id,
+                    articleId: articleId,
                     name: file.name,
                     hash: file.hash,
                     altText: file.altText,
                 });
             }
         }
+        const updatedArticle = await Article.findByPk(articleId);
+
+        if (!updatedArticle) {
+            err("Could not get article after updating");
+            return;
+        }
+
+        res(updatedArticle);
     });
 }
 
