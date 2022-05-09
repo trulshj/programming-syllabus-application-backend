@@ -2,7 +2,6 @@ import DoneCallback = jest.DoneCallback;
 import { ArticleDto } from "../types/ArticleDto";
 import { initSequelize } from "../utils/helper";
 import { Article } from "../database/models/Article.model";
-import { getArticle } from "../services/article";
 
 /*
 // Sequelize database connection

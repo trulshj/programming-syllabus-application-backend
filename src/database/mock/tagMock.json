@@ -53,11 +53,43 @@
             "tagType": "grade"
         },
         {
-            "name": "Bacheloroppgave Dataingeniør",
+            "name": "Matematikk",
             "tagType": "subject"
         },
         {
-            "name": "Systemtenkning med økonomi",
+            "name": "Matematikk P",
+            "tagType": "subject"
+        },
+        {
+            "name": "Matematikk R",
+            "tagType": "subject"
+        },
+        {
+            "name": "Matematikk T",
+            "tagType": "subject"
+        },
+        {
+            "name": "Naturfag",
+            "tagType": "subject"
+        },
+        {
+            "name": "Kjemi",
+            "tagType": "subject"
+        },
+        {
+            "name": "Fysikk",
+            "tagType": "subject"
+        },
+        {
+            "name": "Kunst & Håndverk",
+            "tagType": "subject"
+        },
+        {
+            "name": "Biologi",
+            "tagType": "subject"
+        },
+        {
+            "name": "Informasjonsteknologi og Medieproduksjon",
             "tagType": "subject"
         },
         {
@@ -69,11 +101,35 @@
             "tagType": "theme"
         },
         {
-            "name": "Turtle",
+            "name": "Python",
             "tagType": "tool"
         },
         {
-            "name": "Numpy",
+            "name": "tkinter",
+            "tagType": "tool"
+        },
+        {
+            "name": "Javascript",
+            "tagType": "tool"
+        },
+        {
+            "name": "C#",
+            "tagType": "tool"
+        },
+        {
+            "name": "Raspberry Pi",
+            "tagType": "tool"
+        },
+        {
+            "name": "Micro:bit",
+            "tagType": "tool"
+        },
+        {
+            "name": "Arduino",
+            "tagType": "tool"
+        },
+        {
+            "name": "PyGame",
             "tagType": "tool"
         }
     ]

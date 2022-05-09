@@ -1,3 +1,4 @@
+import { Op } from "@sequelize/core";
 import { Article } from "../database/models/Article.model";
 import { File } from "../database/models/File.model";
 import { Tag } from "../database/models/Tag.model";
@@ -13,7 +14,7 @@ const includeArray = [
         through: { attributes: [] },
         attributes: ["id", "name", "tagType"],
     },
-    { model: File, attributes: ["id", "hash", "name"] },
+    { model: File, attributes: ["id", "hash", "name", "altText"] },
     { model: User, attributes: ["id", "username"] },
 ];
 
@@ -25,12 +26,25 @@ export async function getArticlesByUserId(userId: string) {
     return articles;
 }
 
-export async function getAll() {
+export async function getAll(searchString: string | undefined) {
     return new Promise<Article[]>(async (res, err) => {
-        const articles = await Article.findAll({
-            include: includeArray,
-        });
+        let articles: Article[];
 
+        if (searchString) {
+            articles = await Article.findAll({
+                include: includeArray,
+                where: {
+                    [Op.or]: {
+                        title: { [Op.like]: `%${searchString}%` },
+                        description: { [Op.like]: `%${searchString}%` },
+                    },
+                },
+            });
+        } else {
+            articles = await Article.findAll({
+                include: includeArray,
+            });
+        }
         res(articles);
     });
 }
@@ -96,20 +110,13 @@ export async function update(
     newFiles: FileDto[]
 ) {
     return new Promise<Article>(async (res, err) => {
-        const article = await Article.findByPk(articleId);
-
-        if (!article) {
-            err("Could not find article");
-            return;
-        }
-
-        if (newTitle) {
-            article.setDataValue("title", newTitle);
-        }
-
-        if (newDescription) {
-            article.setDataValue("title", newTitle);
-        }
+        await Article.update(
+            {
+                title: newTitle,
+                description: newDescription,
+            },
+            { where: { id: articleId } }
+        );
 
         if (newTags) {
             await tagService.clearArticleTags(articleId);
@@ -117,16 +124,24 @@ export async function update(
         }
 
         if (newFiles) {
-            await File.destroy({ where: { articleId: article.id } });
+            await File.destroy({ where: { articleId: articleId } });
             for (let file of newFiles) {
                 await File.create({
-                    articleId: article.id,
+                    articleId: articleId,
                     name: file.name,
                     hash: file.hash,
                     altText: file.altText,
                 });
             }
         }
+        const updatedArticle = await Article.findByPk(articleId);
+
+        if (!updatedArticle) {
+            err("Could not get article after updating");
+            return;
+        }
+
+        res(updatedArticle);
     });
 }
 
@@ -142,19 +157,5 @@ export async function remove(articleId: string) {
         }
 
         res(articleId);
-    });
-}
-
-export async function search(query: any) {
-    return new Promise<Article[]>(async (res, err) => {
-        const articles = await getAll();
-
-        res(
-            articles.filter(
-                (x) =>
-                    x.title.includes(query.title) ||
-                    x.description.includes(query.description)
-            )
-        );
     });
 }

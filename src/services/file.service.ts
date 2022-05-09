@@ -13,7 +13,7 @@ export async function get(fileId: string) {
         }
 
         res({
-            path: artifactPath + file.hash + file.extension(),
+            path: artifactPath + file.hash,
             name: file.name,
         });
     });

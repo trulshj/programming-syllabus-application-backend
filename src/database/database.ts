@@ -70,10 +70,17 @@ module.exports = () => {
                         }
 
                         console.info("Adding File data");
-                        const fileData = require("./mock/fileMock.json");
-                        for (let fileNumber in fileData) {
-                            await File.create(fileData[fileNumber]).catch(
-                                (error: any) => console.error(error)
+                        const fileData: {
+                            files: {
+                                hash: string;
+                                name: string;
+                                articleId: number;
+                                altText: string | undefined;
+                            }[];
+                        } = require("./mock/fileMock.json");
+                        for (let file of fileData.files) {
+                            await File.create(file).catch((error: any) =>
+                                console.error(error)
                             );
                         }
                     }

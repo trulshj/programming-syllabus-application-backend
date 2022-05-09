@@ -1,42 +1,179 @@
 {
-    "01": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Fil nr 1.png",
-        "articleId": 1
-    },
-    "02": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr2.png",
-        "articleId": 1
-    },
-    "03": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.png",
-        "articleId": 2
-    },
-    "04": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.png",
-        "articleId": 2
-    },
-    "05": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.png",
-        "articleId": 5
-    },
-    "06": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr2.png",
-        "articleId": 5
-    },
-    "07": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.png",
-        "articleId": 5
-    },
-    "08": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.png",
-        "articleId": 6
-    }
+    "files": [
+        {
+            "hash": "1.jpg",
+            "name": "1.jpg",
+            "articleId": 1,
+            "altText": "Thumbnail!"
+        },
+        {
+            "hash": "1.png",
+            "name": "1.png",
+            "articleId": 1
+        },
+        {
+            "hash": "2.png",
+            "name": "2.png",
+            "altText": "Thumbnail!",
+            "articleId": 2
+        },
+        {
+            "hash": "2.pdf",
+            "name": "2.pdf",
+            "articleId": 2
+        },
+        {
+            "hash": "3.jpg",
+            "name": "3.jpg",
+            "altText": "Thumbnail!",
+            "articleId": 3
+        },
+        {
+            "hash": "3.docx",
+            "name": "3.docx",
+            "articleId": 3
+        },
+        {
+            "hash": "3.zip",
+            "name": "3.zip",
+            "articleId": 3
+        },
+        {
+            "hash": "4.png",
+            "name": "4.png",
+            "altText": "Thumbnail!",
+            "articleId": 4
+        },
+        {
+            "hash": "4.pdf",
+            "name": "4.pdf",
+            "articleId": 4
+        },
+        {
+            "hash": "4.zip",
+            "name": "4.zip",
+            "articleId": 4
+        },
+        {
+            "hash": "5.png",
+            "name": "5.png",
+            "altText": "Thumbnail!",
+            "articleId": 5
+        },
+        {
+            "hash": "5.pdf",
+            "name": "5.pdf",
+            "articleId": 5
+        },
+        {
+            "hash": "6.jpg",
+            "name": "6.jpg",
+            "altText": "Thumbnail!",
+            "articleId": 6
+        },
+        {
+            "hash": "6.docx",
+            "name": "6.docx",
+            "articleId": 6
+        },
+        {
+            "hash": "6_1.html",
+            "name": "6_1.html",
+            "articleId": 6
+        },
+        {
+            "hash": "6_2.html",
+            "name": "6_2.html",
+            "articleId": 6
+        },
+        {
+            "hash": "6_1.ipynb",
+            "name": "6_1.ipynb",
+            "articleId": 6
+        },
+        {
+            "hash": "6_2.ipynb",
+            "name": "6_2.ipynb",
+            "articleId": 6
+        },
+        {
+            "hash": "6_3.ipynb",
+            "name": "6_3.ipynb",
+            "articleId": 6
+        },
+        {
+            "hash": "6.pdf",
+            "name": "6.pdf",
+            "articleId": 6
+        },
+        {
+            "hash": "7.png",
+            "name": "7.png",
+            "altText": "Thumbnail!",
+            "articleId": 7
+        },
+        {
+            "hash": "7.pdf",
+            "name": "7.pdf",
+            "articleId": 7
+        },
+        {
+            "hash": "7.txt",
+            "name": "7.txt",
+            "articleId": 7
+        },
+        {
+            "hash": "8.png",
+            "name": "8.png",
+            "altText": "Thumbnail!",
+            "articleId": 8
+        },
+        {
+            "hash": "8.py",
+            "name": "8.py",
+            "articleId": 8
+        },
+        {
+            "hash": "8.docx",
+            "name": "8.docx",
+            "articleId": 8
+        },
+        {
+            "hash": "9.png",
+            "name": "9.png",
+            "altText": "Thumbnail!",
+            "articleId": 9
+        },
+        {
+            "hash": "9.zip",
+            "name": "9.zip",
+            "articleId": 9
+        },
+        {
+            "hash": "9.pdf",
+            "name": "9.pdf",
+            "articleId": 9
+        },
+        {
+            "hash": "10.txt",
+            "name": "10.txt",
+            "articleId": 10
+        },
+        {
+            "hash": "10.docx",
+            "name": "10.docx",
+            "articleId": 10
+        },
+        {
+            "hash": "10.png",
+            "name": "10.png",
+            "altText": "Thumbnail!",
+            "articleId": 10
+        },
+        {
+            "hash": "10.zip",
+            "name": "10.zip",
+            "articleId": 10
+        }
+    ]
 }
