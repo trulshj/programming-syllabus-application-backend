@@ -1,3 +1,4 @@
+import { Op } from "@sequelize/core";
 import { Article } from "../database/models/Article.model";
 import { File } from "../database/models/File.model";
 import { Tag } from "../database/models/Tag.model";
@@ -13,7 +14,7 @@ const includeArray = [
         through: { attributes: [] },
         attributes: ["id", "name", "tagType"],
     },
-    { model: File, attributes: ["id", "hash", "name"] },
+    { model: File, attributes: ["id", "hash", "name", "altText"] },
     { model: User, attributes: ["id", "username"] },
 ];
 
@@ -25,12 +26,25 @@ export async function getArticlesByUserId(userId: string) {
     return articles;
 }
 
-export async function getAll() {
+export async function getAll(searchString: string | undefined) {
     return new Promise<Article[]>(async (res, err) => {
-        const articles = await Article.findAll({
-            include: includeArray,
-        });
+        let articles: Article[];
 
+        if (searchString) {
+            articles = await Article.findAll({
+                include: includeArray,
+                where: {
+                    [Op.or]: {
+                        title: { [Op.like]: `%${searchString}%` },
+                        description: { [Op.like]: `%${searchString}%` },
+                    },
+                },
+            });
+        } else {
+            articles = await Article.findAll({
+                include: includeArray,
+            });
+        }
         res(articles);
     });
 }
@@ -142,19 +156,5 @@ export async function remove(articleId: string) {
         }
 
         res(articleId);
-    });
-}
-
-export async function search(query: any) {
-    return new Promise<Article[]>(async (res, err) => {
-        const articles = await getAll();
-
-        res(
-            articles.filter(
-                (x) =>
-                    x.title.includes(query.title) ||
-                    x.description.includes(query.description)
-            )
-        );
     });
 }

@@ -1,42 +1,241 @@
 {
-    "01": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Fil nr 1.png",
-        "articleId": 1
-    },
-    "02": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr2.png",
-        "articleId": 1
-    },
-    "03": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.png",
-        "articleId": 2
-    },
-    "04": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.png",
-        "articleId": 2
-    },
-    "05": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.png",
-        "articleId": 5
-    },
-    "06": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr2.png",
-        "articleId": 5
-    },
-    "07": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.png",
-        "articleId": 5
-    },
-    "08": {
-        "hash": "57ee5478eaadb034ba59944eb977797b49ca6aa8d3574587f36ebcbeeb65f70e",
-        "name": "Filenr1.png",
-        "articleId": 6
-    }
+    "files": [
+        {
+            "hash": "upload_867089b815a3478ac9eb937a3fca445d.jpg",
+            "name": "01_thumbnail.jpg",
+            "articleId": 1,
+            "altText": "Thumbnail!"
+        },
+        {
+            "hash": "upload_2a857f818dea1acec17616585008de26.png",
+            "name": "01_opplegg.png",
+            "articleId": 1
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 2
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 2
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 3
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 3
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 3
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 3
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 3
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 3
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 3
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 3
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 4
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 5
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 5
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 6
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 6
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 6
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 6
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 6
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 6
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 6
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 6
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 7
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 7
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 7
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 8
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 8
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 8
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 9
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 9
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 9
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 10
+        },
+        {
+            "hash": "",
+            "name": "",
+            "articleId": 10
+        },
+        {
+            "hash": "",
+            "name": "chemicals.png",
+            "articleId": 10,
+            "altText": "Thumbnail!"
+        },
+        {
+            "hash": "",
+            "name": "10.zip",
+            "articleId": 10
+        }
+    ]
 }

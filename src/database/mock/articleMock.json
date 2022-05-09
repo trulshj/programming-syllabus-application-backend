@@ -1,128 +1,80 @@
 {
     "1": {
-        "title": "Undervisnings tittel 01",
+        "title": "Programmering i naturfag",
         "authorId": "6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
-        "timeToComplete": "20",
+        "description": "Målet er at elevene lage en elektrisk krets og regulere den vha programmering. De kan få oppdage hvordan hvordan man kan regulere en vifte ved å programmere motoren og bruke sensorene i micro:bit.",
+        "timeToComplete": "90",
         "viewCounter": 0,
         "published": 0
     },
     "2": {
-        "title": "undervisnings opplegg nr 2",
+        "title": "Enkle regnestykker i Python",
         "authorId": "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
+        "description": "Kunne programmere enkle regnestykker på Python",
         "timeToComplete": "10",
         "viewCounter": 0,
         "published": 1
     },
     "3": {
-        "title": "undervisnings opplegg nr 3",
+        "title": "Bølger og Trådløs kommunikasjon",
         "authorId": "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
+        "description": "Temaet skal gi en introduksjon av både teori innen stråling, bølgefenomener, trådløs kommunikasjon og litt formelregning, samt gi elevene mulighet til å både utforske blokkprogrammering ved å teste ut en robot og trådløs kommunikasjon ved å bruke Micro: bit.",
         "timeToComplete": "10",
         "viewCounter": 0,
         "published": 1
     },
     "4": {
-        "title": "undervisnings opplegg nr 4",
+        "title": "Utforsking av derivasjon ved numeriske metoder",
         "authorId": "6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
+        "description": "I undervisningsopplegget skal elevene utforske derivasjon ved å bli kjent med ulike metoder for å finne den deriverte. Programmeringsdelen av dette blir å bli introdusert for numerisk metode, som i grunnen ikke skiller seg så mye ut fra hvordan vi vanligvis pleier å introdusere derivasjon, nemlig ved overgangen fra gjennomsnittlig vekstfart til momentanvekstfart som grensen når for gjennomsnittlig vekstfart når delta-x går mot null (altså definisjonen).",
         "timeToComplete": "10",
         "viewCounter": 0,
         "published": 1
     },
     "5": {
-        "title": "Undervisnings tittel 05",
+        "title": "Enkelt spill i Tkinter",
         "authorId": "6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
+        "description": "Undervisning i grafikkmodulen tkinter, time og kanskje flere biblotek også. Gjøres ved å programmere et enkelt spill.",
         "timeToComplete": "20",
         "viewCounter": 0,
         "published": 0
     },
     "6": {
-        "title": "undervisnings opplegg nr 6",
+        "title": "Bruk av programmering i utforskning av matematiske sammenhenger og modellering",
         "authorId": "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
+        "description": "Lær om grunnleggende progammering og utforsk matematisk modellering ved hjelp av en Micro:bit bil!",
         "timeToComplete": "10",
         "viewCounter": 0,
         "published": 1
     },
     "7": {
-        "title": "undervisnings opplegg nr 7",
+        "title": "Lag et eget spill i PyGame!",
         "authorId": "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
+        "description": "Eleven får fungerende kode, og blir bedt om å endre på koden i spillet slik at spillet blir “deres eget”. Spillet skal ikke ligne grafisk på spillet de fikk av meg.",
         "timeToComplete": "10",
         "viewCounter": 0,
         "published": 1
     },
     "8": {
-        "title": "undervisnings opplegg nr 8",
+        "title": "Trigonometri med Python",
         "authorId": "6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
+        "description": "Trigonometri – finne sider, vinkler og areal av trekanter",
         "timeToComplete": "10",
         "viewCounter": 0,
         "published": 1
     },
     "9": {
-        "title": "Undervisnings tittel 09",
+        "title": "Lage et spill i PyGame",
         "authorId": "6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
+        "description": "Elevene skal lage et spill der en sprite figur (en jogger) skal kunne bevege seg framover skjermen i x retning. På veien vil den møte hindre eller objekter som kommer imot seg som han må hoppe over, helt til han når mål på motsatt side av vinduet.",
         "timeToComplete": "20",
         "viewCounter": 0,
         "published": 0
     },
     "10": {
-        "title": "undervisnings opplegg nr 10",
+        "title": "Titrering og derivasjon",
         "authorId": "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
-        "timeToComplete": "10",
-        "viewCounter": 0,
-        "published": 1
-    },
-    "11": {
-        "title": "undervisnings opplegg nr 11",
-        "authorId": "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
-        "timeToComplete": "10",
-        "viewCounter": 0,
-        "published": 1
-    },
-    "12": {
-        "title": "undervisnings opplegg nr 12",
-        "authorId": "6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
-        "timeToComplete": "10",
-        "viewCounter": 0,
-        "published": 1
-    },
-    "13": {
-        "title": "Undervisnings tittel 13",
-        "authorId": "6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
-        "timeToComplete": "20",
-        "viewCounter": 0,
-        "published": 0
-    },
-    "14": {
-        "title": "undervisnings opplegg nr 14",
-        "authorId": "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
-        "timeToComplete": "10",
-        "viewCounter": 0,
-        "published": 1
-    },
-    "15": {
-        "title": "undervisnings opplegg nr 15",
-        "authorId": "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
-        "description": "test beskrivelse",
-        "timeToComplete": "10",
-        "viewCounter": 0,
-        "published": 1
-    },
-    "16": {
-        "title": "Test title",
-        "authorId": "6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a",
-        "description": "En lengre tekst som forklarer hovedinformasjon om undervisningsopplegget.",
+        "description": "Elevene skal i kjemi bli kjent med titrering som metode, både manuell og ved hjelp av datalogger. De skal se hvordan vi kan bestemme ekvivalenspunktet ved å bruke den deriverte.",
         "timeToComplete": "10",
         "viewCounter": 0,
         "published": 1

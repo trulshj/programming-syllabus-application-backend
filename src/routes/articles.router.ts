@@ -168,5 +168,3 @@ router.put("/:id", articleController.update);
  */
 
 router.delete("/:id", articleController.remove);
-
-router.get("/search", articleController.search);

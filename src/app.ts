@@ -30,10 +30,19 @@ sequelizeInstance
 import { Application } from "express";
 import express = require("express");
 import cors = require("cors");
+import formidable = require("express-formidable");
 
 const app: Application = express();
 
 app.use(express.json({ limit: "1000mb" }));
+app.use(
+    formidable({
+        hash: true,
+        uploadDir: "./artifacts",
+        multiples: true,
+        keepExtensions: true,
+    })
+);
 app.use(
     express.urlencoded({
         limit: "1000mb",
