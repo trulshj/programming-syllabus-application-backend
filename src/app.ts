@@ -36,14 +36,6 @@ const app: Application = express();
 
 app.use(express.json({ limit: "1000mb" }));
 app.use(
-    formidable({
-        hash: true,
-        uploadDir: "./artifacts",
-        multiples: true,
-        keepExtensions: true,
-    })
-);
-app.use(
     express.urlencoded({
         limit: "1000mb",
         extended: true,
@@ -68,9 +60,9 @@ app.use((req, res, next) => {
 
 app.use("/users", users.router);
 app.use("/login", login.router);
-app.use("/articles", articles.router);
 app.use("/files", files.router);
 app.use("/tags", tags.router);
+app.use("/articles", articles.router);
 
 /*
     ssl setup

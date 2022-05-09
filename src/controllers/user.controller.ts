@@ -51,7 +51,12 @@ export async function get(req: Request, res: Response) {
 
 export async function update(req: Request, res: Response) {
     userService
-        .update(req.body)
+        .update(
+            req.params.id,
+            req.body.newUsername,
+            req.body.newEmail,
+            req.body?.newPassword
+        )
         .then((user) => {
             res.status(200).json(user);
         })
