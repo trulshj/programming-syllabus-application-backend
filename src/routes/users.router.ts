@@ -87,6 +87,6 @@ router.post("/", userController.create);
  *          description: note response not decided yet
  */
 
-router.put("/", userController.update);
+router.put("/:id", userController.update);
 
 router.get("/:id/articles", userController.getUserArticles);

@@ -1,6 +1,7 @@
 import { User } from "../database/models/User.model";
 import { getRandomString } from "../utils/helper";
 import { UserDto } from "../types/UserDto";
+import { where } from "sequelize/types";
 
 export async function login(email: string, password: string): Promise<UserDto> {
     return new Promise<UserDto>(async (res, error) => {
@@ -83,30 +84,41 @@ export async function create(
 
 export async function update(
     userId: string,
-    newUsername?: string,
-    newEmail?: string,
+    newUsername: string,
+    newEmail: string,
     newPassword?: string
 ) {
     return new Promise<UserDto>(async (res, error) => {
-        const user = await User.findByPk(userId);
+        if (newPassword) {
+            await User.update(
+                {
+                    username: newUsername,
+                    email: newEmail,
+                    password: newPassword,
+                },
+                {
+                    where: { id: userId },
+                }
+            );
+        } else {
+            await User.update(
+                {
+                    username: newUsername,
+                    email: newEmail,
+                },
+                {
+                    where: { id: userId },
+                }
+            );
+        }
 
-        if (!user) {
-            error("User not found");
+        const updatedUser = await User.findByPk(userId);
+
+        if (!updatedUser) {
+            error("Could not get user after updating");
             return;
         }
 
-        if (newUsername) {
-            user.update("username", newUsername);
-        }
-
-        if (newEmail) {
-            user.update("email", newEmail);
-        }
-
-        if (newPassword) {
-            user.update("password", newPassword);
-        }
-
-        res(user.getDto());
+        res(updatedUser.getDto());
     });
 }
