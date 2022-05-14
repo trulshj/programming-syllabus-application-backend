@@ -2,5 +2,9 @@
 *.idea*
 *outdir*
 /.env
-/artifacts/
-/certificate/
+
+/artifacts/*
+!/artifacts/.gitkeep
+
+/certificate/*
+!/certificate/.gitkeep
