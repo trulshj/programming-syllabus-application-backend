@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "npm run-script build; jest --runInBand",
+        "cert": "openssl req -nodes -new -x509 -keyout ./certificate/key.pem -out ./certificate/cert.pem",
         "build": "tsc --build -v",
         "dev": "nodemon src/app.ts",
         "test-linux": "rm -r outdir; npm run-script test;"
