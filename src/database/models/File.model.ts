@@ -23,10 +23,6 @@ export class File extends Model<
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
-
-    extension() {
-        return "." + this.name.split(".")[1];
-    }
 }
 
 File.init(
