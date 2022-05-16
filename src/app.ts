@@ -15,10 +15,9 @@ export const sequelizeInstance = initSequelize();
 sequelizeInstance
     .authenticate()
     .then(() => {
-        const database = require("./database/database");
-        database()
-            .setup(sequelizeInstance)
-            .then(() => console.log("Database setup finised"));
+        setupDatabase(sequelizeInstance).then(() =>
+            console.log("Database setup finised")
+        );
     })
     .catch((err: any) => {
         console.error("Unable to connect to the database:", err);
@@ -87,6 +86,7 @@ console.log("API URL: https://localhost:" + port);
 
 import swaggerJsdoc = require("swagger-jsdoc");
 import swaggerUi = require("swagger-ui-express");
+import { setupDatabase } from "./database/database";
 
 const swaggerEndPoint: string = "/api-docs/";
 const swaggerDefinition = {

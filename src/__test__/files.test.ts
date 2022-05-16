@@ -1,3 +1,5 @@
+/*
+
 import DoneCallback = jest.DoneCallback;
 import { initSequelize } from "../utils/helper";
 
@@ -101,3 +103,5 @@ test("fetching artifacts(images) from backend, file is in database but missing p
 afterAll((done) => {
     sequelize.close().then(done());
 });
+
+*/

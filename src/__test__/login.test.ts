@@ -1,23 +1,18 @@
+/*
 import DoneCallback = jest.DoneCallback;
 import { initSequelize } from "../utils/helper";
-const userFeatuer = require("../user/userFeatures");
+import { setupDatabase } from "../database/database";
 
 jest.setTimeout(50000);
 
 // Sequelize database connection
 const sequelize = initSequelize();
 
-const database = require("../database/database");
 beforeAll(async (done: DoneCallback) => {
-    await sequelize.authenticate().then(async () => {
-        await database()
-            .setup(sequelize)
-            .then(() => {
-                done();
-            });
+    await setupDatabase(sequelize).then(() => {
+        done();
     });
 });
-/*
 test("login a user", (done) => {
     const jestUser: UserDto = {
         email: "user@user.com",
