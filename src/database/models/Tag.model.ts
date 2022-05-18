@@ -6,6 +6,7 @@ import {
     Model,
 } from "@sequelize/core";
 import { sequelizeInstance } from "../../app";
+import { TagType } from "../../types/TagDto";
 
 export class Tag extends Model<
     InferAttributes<Tag>,
@@ -13,7 +14,7 @@ export class Tag extends Model<
 > {
     declare id: CreationOptional<number>;
     declare name: string;
-    declare tagType: number;
+    declare tagType: TagType;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;

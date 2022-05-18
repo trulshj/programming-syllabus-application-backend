@@ -1,6 +1,6 @@
 import { sequelizeInstance } from "../app";
 import { Tag } from "../database/models/Tag.model";
-import { TagDto } from "../types/TagDto";
+import { TagDto, TagType } from "../types/TagDto";
 
 function tagArticle() {
     return sequelizeInstance.model("TagArticle");
@@ -14,7 +14,7 @@ export async function getAll() {
 }
 
 export async function get() {}
-export async function create(tagType: number, name: string) {
+export async function create(tagType: TagType, name: string) {
     return new Promise<Tag>(async (res, error) => {
         const tag = await Tag.create({ name: name, tagType: tagType });
 

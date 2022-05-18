@@ -1,56 +1,46 @@
 import DoneCallback = jest.DoneCallback;
-import { initSequelize } from "../utils/helper";
-import { User } from "../database/models/User.model";
-import { setupDatabase } from "../database/database";
+import userService = require("../services/user.service");
 
-jest.setTimeout(50000);
-
-// Sequelize database connection
-const sequelize = initSequelize();
+jest.setTimeout(10_000);
 
 beforeAll((done: DoneCallback) => {
     setTimeout(() => {
         done();
-    }, 10000);
+    }, 3_000);
 });
 
 test("create a user", async () => {
     const newUser = {
-        id: "100",
-        username: "a new user",
-        email: "username@email.com",
-        password: "a password",
-        roleId: 0,
-        verified: true,
+        username: "user100",
+        email: "user100@email.com",
+        password: "password123",
     };
 
-    const user = await User.create(newUser);
-    expect(user).toBeDefined();
-    expect(user.username).toBe("a new user");
+    userService
+        .create(newUser.username, newUser.email, newUser.password)
+        .then((res) => expect(res.username).toBe(newUser.username));
 });
 
 test("testing duplicate username", async () => {
     const newUser = {
-        id: "101",
         username: "admin",
-        email: "user@email.com",
-        password: "a password",
-        roleId: 0,
-        verified: true,
+        email: "user101@email.com",
+        password: "password123",
     };
 
-    const user = await User.create(newUser);
+    userService
+        .create(newUser.username, newUser.email, newUser.password)
+        .catch((err) => expect(err).toBe("Username already taken"));
 });
 
 test("testing duplicate email", async () => {
     const newUser = {
-        id: "102",
-        username: "admin",
-        email: "user@email.com",
-        password: "a password",
-        roleId: 0,
-        verified: true,
+        username: "user102",
+        email: "admin@admin.com",
+        password: "password123",
     };
 
-    const user = await User.create(newUser);
+    userService
+        .create(newUser.username, newUser.email, newUser.password)
+        .catch((err) => expect(err).toBe("Email already in use"));
 });

@@ -10,13 +10,14 @@ import { initSequelize } from "./utils/helper";
 
 // Create instance of sequelize database connection
 export const sequelizeInstance = initSequelize();
+export const port = parseInt(process.env.PORT || "8080");
 
 // Connect to and setup the database
 sequelizeInstance
     .authenticate()
     .then(() => {
-        setupDatabase(sequelizeInstance).then(() =>
-            console.log("Database setup finised")
+        setupDatabase(sequelizeInstance, process.env.NODE_ENV !== "test").then(
+            () => console.log("Database setup finised")
         );
     })
     .catch((err: any) => {
@@ -29,7 +30,6 @@ sequelizeInstance
 import { Application } from "express";
 import express = require("express");
 import cors = require("cors");
-import formidable = require("express-formidable");
 
 const app: Application = express();
 
@@ -68,48 +68,48 @@ app.use("/articles", articles.router);
 */
 import fs = require("fs");
 import https = require("https");
-
-const ssl = {
-    key: fs.readFileSync("./certificate/key.pem"),
-    cert: fs.readFileSync("./certificate/cert.pem"),
-};
-const httpsServer = https.createServer(ssl, app);
-const port: number = 8080;
-
-httpsServer.listen(port);
-console.log("API URL: https://localhost:" + port);
-
-/*
-    Swagger setup
-    based on https://github.com/Surnet/swagger-jsdoc/blob/master/examples/app/app.js
-*/
-
 import swaggerJsdoc = require("swagger-jsdoc");
 import swaggerUi = require("swagger-ui-express");
 import { setupDatabase } from "./database/database";
 
-const swaggerEndPoint: string = "/api-docs/";
-const swaggerDefinition = {
-    info: {
-        title: "Teaching Articles API",
-        swagger: "2.0",
-        version: "0.0.1",
-        description:
-            "Backend API for fetching and creating articles about programming within different subjects",
-    },
-    servers: [
-        {
-            url: "https://localhost:${port}",
+if (process.env.NODE_ENV !== "test") {
+    const ssl = {
+        key: fs.readFileSync("./certificate/key.pem"),
+        cert: fs.readFileSync("./certificate/cert.pem"),
+    };
+    const httpsServer = https.createServer(ssl, app);
+
+    httpsServer.listen(port);
+    console.log("API URL: https://localhost:" + port);
+
+    /*
+    Swagger setup
+    based on https://github.com/Surnet/swagger-jsdoc/blob/master/examples/app/app.js
+*/
+
+    const swaggerEndPoint: string = "/api-docs/";
+    const swaggerDefinition = {
+        info: {
+            title: "Teaching Articles API",
+            swagger: "2.0",
+            version: "0.0.1",
+            description:
+                "Backend API for fetching and creating articles about programming within different subjects",
         },
-    ],
-};
+        servers: [
+            {
+                url: "https://localhost:${port}",
+            },
+        ],
+    };
 
-const swaggerOptions = {
-    swaggerDefinition,
-    apis: ["./src/*/*.ts", "./outdir/*/*.js"],
-};
+    const swaggerOptions = {
+        swaggerDefinition,
+        apis: ["./src/*/*.ts", "./outdir/*/*.js"],
+    };
 
-const swaggerSpec = swaggerJsdoc(swaggerOptions);
+    const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
-app.use(swaggerEndPoint, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-console.log("API Doc: https://localhost:" + port + swaggerEndPoint);
+    app.use(swaggerEndPoint, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    console.log("API Doc: https://localhost:" + port + swaggerEndPoint);
+}

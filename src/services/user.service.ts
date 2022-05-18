@@ -10,14 +10,14 @@ export async function login(email: string, password: string): Promise<UserDto> {
         });
 
         if (!user) {
-            error(`Could not find user with email "${email}"`);
+            error("Incorrect password or email");
             return;
         }
 
         if (user.comparePassword(password)) {
             res(user.getDto());
         } else {
-            error("Incorrect Password");
+            error("Incorrect password or email");
         }
         return;
     });

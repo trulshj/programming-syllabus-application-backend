@@ -4,8 +4,12 @@ import { Article } from "./models/Article.model";
 import { File } from "./models/File.model";
 import { User } from "./models/User.model";
 import { Tag } from "./models/Tag.model";
+import { TagType } from "../types/TagDto";
 
-export async function setupDatabase(sequelize: Sequelize): Promise<void> {
+export async function setupDatabase(
+    sequelize: Sequelize,
+    logging = false
+): Promise<void> {
     //models
 
     // Article 1:m
@@ -31,7 +35,7 @@ export async function setupDatabase(sequelize: Sequelize): Promise<void> {
         .sync({ force: process.env.DATABASE_FORCE_UPDATE == "true" })
         .then(async () => {
             if (process.env.SERVER_TEST_DATA == "true") {
-                console.info("Adding mock data to the database");
+                if (logging) console.info("Adding mock data to the database");
                 const dataUser = require("./mock/userMock.json");
                 for (let userNumber in dataUser) {
                     await User.create(dataUser[userNumber]).catch(
@@ -39,7 +43,7 @@ export async function setupDatabase(sequelize: Sequelize): Promise<void> {
                     );
                 }
 
-                console.info("Adding Article data");
+                if (logging) console.info("Adding Article data");
                 const articleData = require("./mock/articleMock.json");
                 for (let articleNumber in articleData) {
                     await Article.create(articleData[articleNumber]).catch(
@@ -47,9 +51,9 @@ export async function setupDatabase(sequelize: Sequelize): Promise<void> {
                     );
                 }
 
-                console.info("Adding Tag data");
+                if (logging) console.info("Adding Tag data");
                 const tagData: {
-                    tags: { name: string; tagType: number }[];
+                    tags: { name: string; tagType: TagType }[];
                 } = require("./mock/tagMock.json");
                 for (let tag of tagData.tags) {
                     await Tag.create({
@@ -58,7 +62,7 @@ export async function setupDatabase(sequelize: Sequelize): Promise<void> {
                     }).catch((error: any) => console.error(error));
                 }
 
-                console.info("Adding TagArticle data");
+                if (logging) console.info("Adding TagArticle data");
                 const tagArticleData = require("./mock/tagArticleMock.json");
                 for (let tagArticle of tagArticleData.tagArticles) {
                     await sequelize
@@ -67,7 +71,7 @@ export async function setupDatabase(sequelize: Sequelize): Promise<void> {
                         .catch((error: any) => console.error(error));
                 }
 
-                console.info("Adding File data");
+                if (logging) console.info("Adding File data");
                 const fileData: {
                     files: {
                         hash: string;

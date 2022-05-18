@@ -26,7 +26,7 @@ export async function getArticlesByUserId(userId: string) {
     return articles;
 }
 
-export async function getAll(searchString: string | undefined) {
+export async function getAll(searchString: string | undefined = undefined) {
     return new Promise<Article[]>(async (res, err) => {
         let articles: Article[];
 

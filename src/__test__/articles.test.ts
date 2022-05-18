@@ -1,62 +1,79 @@
 import DoneCallback = jest.DoneCallback;
-import { ArticleDto } from "../types/ArticleDto";
-import { initSequelize } from "../utils/helper";
-import { Article } from "../database/models/Article.model";
+import articleService = require("../services/article.service");
 
-/*
-// Sequelize database connection
-const sequelize = initSequelize();
+jest.setTimeout(10_000);
 
-const database = require("../database/database");
-beforeAll(async (done: DoneCallback) => {
-    await sequelize.authenticate().then(async () => {
-        await database()
-            .setup(sequelize)
-            .then(() => {
-                done();
-            });
+beforeAll((done: DoneCallback) => {
+    setTimeout(() => {
+        done();
+    }, 3_000);
+});
+
+test("Get article", async () => {
+    articleService.get(1).then((res) => {
+        expect(res.id).toBe(1);
     });
 });
 
-test("fething article from database", (done) => {
-    getArticle(2).then((article) => {
-        expect(article).toBeDefined();
-        done();
+test("Get all articles", async () => {
+    articleService.getAll().then((res) => {
+        expect(res.length).toBeGreaterThan(1);
     });
-}, 6000);
+});
 
-test("trying to fetch data from hidden article", (done) => {
-    getArticle(1)
-        .then()
-        .catch((error: any) => {
-            expect(error).toBeDefined();
-            done();
+test("Create article", async () => {
+    const newArticle = {
+        title: "Articles 101",
+        description: "How to create articles",
+        authorId:
+            "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
+        tags: [],
+        files: [],
+    };
+
+    articleService
+        .create(
+            newArticle.title,
+            newArticle.description,
+            newArticle.authorId,
+            newArticle.tags,
+            newArticle.files
+        )
+        .then((res) => {
+            expect(res.title).toBe(newArticle.title);
         });
-}, 6000);
-
-test("trying to fetch unpublished by owned user", (done) => {
-    getArticle(
-        1,
-        "6d9010b2b7a1483b256ae7477738dba7c530bd9ba53db1d6691441e74b83608a"
-    ).then((article: ArticleDto) => {
-        expect(article).toBeDefined();
-        expect(article.timeToComplete).toBe(20);
-        done();
-    });
-}, 6000);
-
-test("trying to fetch unpublished by admin", (done) => {
-    getArticle(
-        1,
-        "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7"
-    ).then((article: ArticleDto) => {
-        expect(article).toBeDefined();
-        expect(article.timeToComplete).toBe(20);
-        done();
-    });
-}, 6000);
-
-afterAll((done) => {
-    sequelize.close().then(done());
 });
-*/
+
+test("Update article", async () => {
+    const newArticle = {
+        title: "Articles 101",
+        description: "How to create articles",
+        authorId:
+            "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
+        tags: [],
+        files: [],
+    };
+
+    const article = await articleService.create(
+        newArticle.title,
+        newArticle.description,
+        newArticle.authorId,
+        newArticle.tags,
+        newArticle.files
+    );
+
+    const newTitle = "Articles 201";
+    const newDescription = "How to update articles";
+
+    articleService
+        .update(
+            article.id,
+            newTitle,
+            newDescription,
+            newArticle.tags,
+            newArticle.files
+        )
+        .then((res) => {
+            expect(res.title).toBe(newTitle);
+        });
+});

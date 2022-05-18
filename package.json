@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "npm run-script build; jest --runInBand",
+        "pretest": "npm run build",
+        "test": "jest -i --detectOpenHandles",
         "cert": "openssl req -nodes -new -x509 -keyout ./certificate/key.pem -out ./certificate/cert.pem",
         "build": "tsc --build -v",
         "dev": "nodemon src/app.ts",

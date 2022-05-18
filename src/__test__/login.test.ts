@@ -1,60 +1,52 @@
-/*
 import DoneCallback = jest.DoneCallback;
-import { initSequelize } from "../utils/helper";
-import { setupDatabase } from "../database/database";
+import userService = require("../services/user.service");
 
-jest.setTimeout(50000);
+jest.setTimeout(10_000);
 
-// Sequelize database connection
-const sequelize = initSequelize();
-
-beforeAll(async (done: DoneCallback) => {
-    await setupDatabase(sequelize).then(() => {
+beforeAll((done: DoneCallback) => {
+    setTimeout(() => {
         done();
-    });
+    }, 3_000);
 });
-test("login a user", (done) => {
-    const jestUser: UserDto = {
-        email: "user@user.com",
-        password: "test",
-        username: "",
+
+test("Login to a user", async () => {
+    const newUser = {
+        username: "user200",
+        email: "user100@email.com",
+        password: "password123",
     };
 
-    userFeatuer.logInUser(jestUser, sequelize).then((res: any | undefined) => {
-        expect(res).toBeDefined();
-        expect(res.username).toBe("JestUser");
-        done();
-    });
-}, 6000);
+    await userService.create(newUser.username, newUser.email, newUser.password);
 
-test("login:right user, wrong passowrd", (done) => {
-    const jestUser: UserDto = {
-        email: "user@user.com",
-        password: "test2",
-        username: "",
-    };
-    userFeatuer
-        .logInUser(jestUser, sequelize)
-        .then()
-        .catch((error: any) => {
-            expect(error).toBeDefined();
-            done();
-        });
-}, 6000);
+    userService
+        .login(newUser.email, newUser.password)
+        .then((res) => expect(res.username).toBe(newUser.username));
+});
 
-test("login:wrong user, right passowrd", (done) => {
-    const jestUser: UserDto = {
-        email: "user2@user.com",
-        password: "test2",
-        username: "",
+test("Login with wrong password", async () => {
+    const newUser = {
+        username: "user201",
+        email: "user201@email.com",
+        password: "password123",
     };
-    userFeatuer
-        .logInUser(jestUser, sequelize)
-        .then()
-        .catch((error: any) => {
-            expect(error).toBeDefined();
-            expect(error).toBe("Password dont match");
-            done();
-        });
-}, 6000);
-*/
+
+    await userService.create(newUser.username, newUser.email, newUser.password);
+
+    userService
+        .login(newUser.email, "wrong")
+        .catch((err) => expect(err).toBe("Incorrect password or email"));
+});
+
+test("Login with wrong email", async () => {
+    const newUser = {
+        username: "user202",
+        email: "user202@email.com",
+        password: "password123",
+    };
+
+    await userService.create(newUser.username, newUser.email, newUser.password);
+
+    userService
+        .login("wrong", newUser.password)
+        .catch((err) => expect(err).toBe("Incorrect password or email"));
+});
